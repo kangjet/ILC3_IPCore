@@ -28,9 +28,31 @@ module tb_ilc3_loopback;
     wire       sym_out_valid;
     reg        sym_out_ready;
 
-    // Loopback: TX -> RX
-    assign amp_in       = amp_out;
-    assign amp_in_valid = amp_out_valid;
+    // Channel model interface (TX -> CH -> RX)
+    wire signed [3:0] ch_amp;
+    wire              ch_valid;
+    wire              ch_ready;
+
+    // Loopback: TX -> Channel -> RX
+    ilc3_channel_model #(
+        .AMP_WIDTH(4),
+        .GAIN_NUM (1),
+        .GAIN_DEN (1),
+        .OFFSET   (0),
+        .ADD_NOISE(0)
+    ) u_ch (
+        .clk          (clk),
+        .rst_n        (rst_n),
+        .amp_in       (amp_out),
+        .amp_in_valid (amp_out_valid),
+        .amp_in_ready (ch_ready),
+        .amp_out      (ch_amp),
+        .amp_out_valid(ch_valid),
+        .amp_out_ready(1'b1)
+    );
+
+    assign amp_in       = ch_amp;
+    assign amp_in_valid = ch_valid;
 
     //==================================================
     // DUT instances
