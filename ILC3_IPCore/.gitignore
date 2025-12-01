@@ -1,0 +1,17 @@
+# 빌드 바이너리
+rtl/ilc3_loop*
+rtl/ilc3_ipcore_loop*
+rtl/ilc3_ipcore_x8_loop*
+
+# vvp 출력 로그
+rtl/*.vcd
+rtl/*.fst
+
+# 임시/백업 파일
+*~
+*.swp
+.DS_Store
+
+# 결과/로그 디렉터리 (있다면)
+rtl/logs/
+results/
