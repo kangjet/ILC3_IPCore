@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-CoPBit Q5 – 1-lane 4bit Phase BER with AWGN + ISI + Kuramoto-style cluster aid (v0.1)
+CoPBit Q5 – 1-lane 4bit Phase BER with AWGN + ISI + Kuramoto-style cluster aid (v0.2)
 
 - 4bit / 16-point CoPBit 위상 맵핑 사용 (Q1/Q3와 동일 기본 맵핑)
 - 채널: 심볼레이트 기준 복소수 채널
@@ -75,75 +75,97 @@ def indices_to_bits(k):
 
 
 # -----------------------------
-# Kuramoto-style 클러스터 보정
+# Kuramoto-style 시간축 위상 트래킹 디코더
 # -----------------------------
 
-def get_cluster_index_from_k(k):
+def kuramoto_time_tracking_decode(
+    y,
+    const,
+    theta_ref,
+    isi_alpha: float,
+    mu_phase: float = 0.05,
+    use_preisi: bool = False,
+):
     """
-    16포인트를 4개 클러스터(각 4포인트)로 나누는 인덱스.
-    k = 0~3   -> cluster 0
-        4~7   -> cluster 1
-        8~11  -> cluster 2
-        12~15 -> cluster 3
+    Kuramoto 스타일의 '시간 축 위상 트래킹'을 반영한 디코더.
+
+    - 입력:
+      y         : 채널 출력 (complex, shape (N,))
+      const     : 16포인트 CoPBit 컨스텔레이션 (complex, shape (16,))
+      theta_ref : 16포인트 이상적 위상(rad), shape (16,)
+      isi_alpha : 1-탭 ISI 계수 (0이면 ISI 없음)
+      mu_phase  : 클러스터 위상 추적용 step size (0<mu<=1)
+      use_preisi: True이면 Kuramoto 경로에서 간단한 1-탭 프리보상 적용
+
+    - 출력:
+      k_hat_kura: Kuramoto 기반 시간 트래킹 후의 하드 결정 인덱스(0..15), shape (N,)
     """
-    return k // 4
+    y = np.asarray(y, dtype=np.complex128)
+    N = y.shape[0]
 
+    # 16포인트를 4개 클러스터(각 4포인트)로 나누는 인덱스
+    def cluster_of_k(k):
+        return k // 4
 
-def kuramoto_cluster_refine(theta_rx, k_hat_initial):
-    """
-    Kuramoto 동기화의 '집단 위상' 효과를
-    간단한 cluster-wise circular mean 보정으로 근사.
-
-    입력:
-        theta_rx       : 수신 위상 (rad), 길이 N
-        k_hat_initial  : 초기 하드 결정 결과(0~15, baseline NN 결과)
-
-    출력:
-        k_hat_refined  : 클러스터 평균 보정 후 재디코딩한 인덱스(0~15)
-    """
-    theta_rx = np.asarray(theta_rx)
-    k_hat_initial = np.asarray(k_hat_initial)
-    N = len(theta_rx)
-
-    # 이상적인 16포인트 위상
-    _, theta_ref, _ = get_copbit_constellation()
-
-    # 클러스터 ID
-    c_idx = get_cluster_index_from_k(k_hat_initial)
-
-    # 클러스터별 circular mean 계산
-    cluster_means = np.zeros(4, dtype=np.float64)
+    # 이상적인 클러스터 중심(theta_center_ref[c])과
+    # 클러스터 내 4포인트의 상대 오프셋(theta_offset[p])을 미리 계산
+    theta_ref = np.asarray(theta_ref)
+    cluster_centers_ref = np.zeros(4, dtype=np.float64)
     for c in range(4):
-        mask = (c_idx == c)
-        if not np.any(mask):
-            # 해당 클러스터에 심볼이 없으면 이상적인 중심값(참값 평균) 사용
-            theta_c = theta_ref[c * 4:(c + 1) * 4]
-            # 4포인트 평균
-            z = np.mean(np.exp(1j * theta_c))
+        theta_c = theta_ref[c * 4:(c + 1) * 4]
+        z_c = np.mean(np.exp(1j * theta_c))
+        cluster_centers_ref[c] = np.angle(z_c)
+
+    # 클러스터 0의 중심 기준 상대 오프셋 패턴을 공용으로 사용
+    theta_c0 = theta_ref[0:4]
+    z_c0 = np.mean(np.exp(1j * theta_c0))
+    center0 = np.angle(z_c0)
+    theta_offset = wrap_angle(theta_c0 - center0)  # p=0..3
+
+    # 클러스터 위상 추적 초기값: 이상적인 중심값으로 시작
+    theta_center_hat = cluster_centers_ref.copy()
+
+    k_hat_kura = np.zeros(N, dtype=np.int64)
+    # ISI 프리보상을 위한 이전 심볼 결정값
+    s_prev_hat = 0 + 0j
+
+    for n in range(N):
+        # 1) 필요시 간단한 1-탭 ISI 프리보상
+        if use_preisi and isi_alpha != 0.0 and n > 0:
+            y_eff = y[n] - isi_alpha * s_prev_hat
         else:
-            z = np.mean(np.exp(1j * theta_rx[mask]))
-        cluster_means[c] = np.angle(z)
+            y_eff = y[n]
 
-    # 각 심볼에 대해, 같은 클러스터의 mean을 빼고 재디코딩
-    theta_rx_corr = np.empty_like(theta_rx)
-    for n in range(N):
-        c = c_idx[n]
-        theta_rx_corr[n] = wrap_angle(theta_rx[n] - cluster_means[c])
+        theta_rx = np.angle(y_eff)
 
-    # 각 클러스터에서 "상대 위상" 기준 4포인트(0,22.5,45,67.5deg)로 최근접 결정
-    rel_theta_ref = theta_ref[:4]  # 0~3번 포인트의 위상(상대 기준)
-    k_hat_refined = np.empty_like(k_hat_initial)
-    for n in range(N):
-        c = c_idx[n]
-        # cluster c의 ideal phases는 theta_ref[c*4 + (0..3)]이지만,
-        # mean을 뺀 상태에서는 0~3번 포인트와 동일 패턴.
-        # 따라서 theta_rx_corr[n]을 rel_theta_ref에 매칭한 후
-        # 전역 인덱스로 복원.
-        diff = np.abs(wrap_angle(theta_rx_corr[n] - rel_theta_ref))
-        p_hat = np.argmin(diff)  # 0..3
-        k_hat_refined[n] = c * 4 + p_hat
+        # 2) 현재 추정된 클러스터 중심(theta_center_hat)을 기준으로
+        #    모든 k(0..15)에 대해 이상적 위상 후보를 구성하고 최근접 결정
+        best_k = 0
+        best_metric = 1e9
+        for c in range(4):
+            center_c = theta_center_hat[c]
+            for p in range(4):
+                k = c * 4 + p
+                theta_k = center_c + theta_offset[p]
+                diff = wrap_angle(theta_rx - theta_k)
+                metric = diff * diff
+                if metric < best_metric:
+                    best_metric = metric
+                    best_k = k
 
-    return k_hat_refined
+        k_hat_kura[n] = best_k
+        c_hat = cluster_of_k(best_k)
+
+        # 3) 해당 클러스터 중심을 EMA 형태로 업데이트 (Kuramoto-style)
+        #    theta_center_hat[c] <- arg( (1-mu)*e^{j theta_old} + mu * e^{j theta_rx} )
+        z_old = np.exp(1j * theta_center_hat[c_hat])
+        z_new = (1.0 - mu_phase) * z_old + mu_phase * np.exp(1j * theta_rx)
+        theta_center_hat[c_hat] = np.angle(z_new)
+
+        # 4) ISI 프리보상을 위한 이전 심볼 갱신
+        s_prev_hat = const[best_k]
+
+    return k_hat_kura
 
 
 # -----------------------------
@@ -155,6 +177,8 @@ def simulate_once(
     snr_db: float,
     isi_alpha: float,
     seed: int = 0,
+    mu_phase: float = 0.05,
+    use_preisi: bool = False,
 ):
     """
     - n_sym: 심볼 수 (4bit 심볼)
@@ -196,8 +220,15 @@ def simulate_once(
     # Re가 최대인 k가 거리 최소인 k
     k_hat_baseline = np.argmax(np.real(corr), axis=1)
 
-    # 5) Kuramoto-style cluster mean 보정 후 재디코딩
-    k_hat_kura = kuramoto_cluster_refine(theta_rx, k_hat_baseline)
+    # 5) Kuramoto-style 시간축 위상 트래킹 + (옵션) 1-탭 ISI 프리보상 기반 재디코딩
+    k_hat_kura = kuramoto_time_tracking_decode(
+        y=y,
+        const=const,
+        theta_ref=theta_ref,
+        isi_alpha=isi_alpha,
+        mu_phase=mu_phase,
+        use_preisi=use_preisi,
+    )
 
     # 6) BER 계산
     bits_tx = indices_to_bits(k_tx)
@@ -218,7 +249,7 @@ def simulate_once(
 # -----------------------------
 
 def main():
-    parser = argparse.ArgumentParser(description="CoPBit Q5 – Kuramoto-aided BER with AWGN+ISI (v0.1)")
+    parser = argparse.ArgumentParser(description="CoPBit Q5 – Kuramoto-aided BER with AWGN+ISI (v0.2)")
     parser.add_argument(
         "--n_sym",
         type=int,
@@ -238,6 +269,17 @@ def main():
         help="1-탭 ISI 계수 alpha (0이면 ISI 없음, 기본: 0.3)",
     )
     parser.add_argument(
+        "--mu_phase",
+        type=float,
+        default=0.05,
+        help="Kuramoto-style 클러스터 위상 추적용 step size (0<mu<=1, 기본: 0.05)",
+    )
+    parser.add_argument(
+        "--use_preisi",
+        action="store_true",
+        help="Kuramoto 경로에서 1-탭 ISI 프리보상(y[n]-alpha*s_hat[n-1])을 사용",
+    )
+    parser.add_argument(
         "--seed",
         type=int,
         default=1,
@@ -254,10 +296,12 @@ def main():
 
     snr_list = [float(s) for s in args.snr_list.split(",") if s.strip() != ""]
 
-    print("=== CoPBit Q5 – 1-lane 4bit Phase BER with AWGN+ISI+Kuramoto (v0.1) ===")
+    print("=== CoPBit Q5 – 1-lane 4bit Phase BER with AWGN+ISI+Kuramoto (v0.2) ===")
     print(f"[Param] n_sym        = {args.n_sym}")
     print(f"[Param] snr_list[dB] = {snr_list}")
     print(f"[Param] isi_alpha    = {args.isi_alpha}")
+    print(f"[Param] mu_phase     = {args.mu_phase}")
+    print(f"[Param] use_preisi   = {args.use_preisi}")
     print(f"[Param] seed         = {args.seed}")
     print(f"[Param] FEC threshold (pre-FEC BER) = {args.fec_threshold:.1e}")
     print("------------------------------------------------------------")
@@ -270,6 +314,8 @@ def main():
             snr_db=snr_db,
             isi_alpha=args.isi_alpha,
             seed=args.seed + i,
+            mu_phase=args.mu_phase,
+            use_preisi=args.use_preisi,
         )
         fec_ok_b = ber_b <= args.fec_threshold
         fec_ok_k = ber_k <= args.fec_threshold
