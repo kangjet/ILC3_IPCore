@@ -92,9 +92,24 @@ ILC3_IPCore 관련 docx 문서들의 **역할과 사용 용도**를 정리한 �
   - RTL 레포 구조(core/sim)와 TB, 채널 모델, 시뮬 커맨드를 설명.
   - 위 docx 문서들은 이 RTL 스냅샷(`ILC3_IPCore RTL v0.1`)을 기반으로 작성됨.
 
+---
+
+## 5. 기술 개요 / 한눈에 보기
+
+### 5.1 `docs/ILC3_Tech_Overview_v0.1_ko.docx`
+
+- 역할:
+  - ILC3_0c_guard-phase 링크 기술 전체를 한 문서에 요약한 **기술 개요(Tech Overview)** 문서.
+  - 알고리즘/링크 스펙(Q10~Q20), IPCore RTL 구조(1-lane/x8), 채널/노이즈 검증, 제품 스펙 방향(HBM/GDDR/6G 등)을 하나의 스토리로 연결.
+- 사용처:
+  - 특허/논문/투자자/파트너에게 ILC3 패키지를 처음 설명할 때 맨 처음 보여주는 “표지 문서”.
+  - USB/자료 패키지 구성 시, 전체 묶음을 대표하는 상위 레벨 요약 문서 역할.
+
 이 인덱스 문서의 버전:
 
 - 문서명: `ILC3_IPCore_Docs_Index_v0.1.md`
 - 역할:  
   - ILC3_IPCore 관련 모든 docx/README의 “카탈로그”  
   - 특허/논문/파트너 공유 시, 어떤 문서 조합을 패키지로 보낼지 결정하는 기준.
+
+  - Git 기준 스냅샷: `ilc3_ipcore_v0.1` 태그 (브랜치: `ilc3_q1_q14_fec_guard_phase`)
