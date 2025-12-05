@@ -1,0 +1,37 @@
+=== CoPBit Q20a – PAM4 vs M8 (Channel-b mid-ISI, FFE+DFE, NLMS) BER vs Eb/N0 v0.1 ===
+[Param] n_sym          = 200000
+[Param] Eb/N0_list(dB) = [8.0, 10.0, 12.0, 14.0, 16.0, 18.0, 20.0]
+[Param] ffe_len        = 11
+[Param] dfe_len        = 0
+[Param] train_frac     = 1.0
+[Param] mu_ffe         = 0.02
+[Param] seed           = 1
+
+[Chan ] h_midISI (norm) = [0.02380952 0.23809524 0.47619048 0.23809524 0.02380952]
+[Info ] FFE+DFE baseline (PAM4 vs M8, single-lane, NLMS)
+
+==============================================================
+ Eb/N0_dB |  BER_PAM4_FFE+DFE  |  BER_M8_FFE+DFE 
+---------------------------------------------------------------
+[WARN] FFE/DFE coeff exploded during training (n=2771). stop updates.
+[WARN] FFE/DFE coeff exploded during training (n=2337). stop updates.
+       8.0 |    0.487946897 |    0.503115156
+[WARN] FFE/DFE coeff exploded during training (n=2949). stop updates.
+[WARN] FFE/DFE coeff exploded during training (n=2495). stop updates.
+      10.0 |    0.502462623 |    0.506787006
+[WARN] FFE/DFE coeff exploded during training (n=3128). stop updates.
+[WARN] FFE/DFE coeff exploded during training (n=2423). stop updates.
+      12.0 |    0.505082754 |    0.500138340
+[WARN] FFE/DFE coeff exploded during training (n=3253). stop updates.
+[WARN] FFE/DFE coeff exploded during training (n=3161). stop updates.
+      14.0 |    0.503165158 |    0.508900445
+[WARN] FFE/DFE coeff exploded during training (n=3415). stop updates.
+[WARN] FFE/DFE coeff exploded during training (n=2607). stop updates.
+      16.0 |    0.507285364 |    0.495563111
+[WARN] FFE/DFE coeff exploded during training (n=3062). stop updates.
+[WARN] FFE/DFE coeff exploded during training (n=2521). stop updates.
+      18.0 |    0.508710436 |    0.501665083
+[WARN] FFE/DFE coeff exploded during training (n=3304). stop updates.
+[WARN] FFE/DFE coeff exploded during training (n=2469). stop updates.
+      20.0 |    0.488176909 |    0.496764838
+---------------------------------------------------------------

@@ -1,0 +1,25 @@
+=== CoPBit Q20c – PAM4 mid-ISI (Channel-b) + FFE-only baseline (LMS / NLMS) v0 ===
+[Param] n_sym       = 200000
+[Param] Eb/N0_list  = [8.0, 10.0, 12.0, 14.0, 16.0, 18.0, 20.0]
+[Param] ffe_len     = 11
+[Param] train_frac  = 1.0
+[Param] mu_ffe      = 0.001
+[Param] eq_mode     = nlms
+[Param] dd_after_tr = False
+[Param] w_clip      = 10.0
+[Param] seed        = 1
+
+[Chan ] h_midISI (norm) = [0.04075696 0.40756957 0.81513915 0.40756957 0.04075696]
+[Info ] FFE-only baseline (PAM4, single-lane, mid-ISI + AWGN)
+
+===============================================================
+ Eb/N0_dB |  BER_PAM4_FFE  
+---------------------------------------------------------------
+       8.0 |    0.477503875
+      10.0 |    0.475053753
+      12.0 |    0.470186009
+      14.0 |    0.458132907
+      16.0 |    0.446679834
+      18.0 |    0.431126556
+      20.0 |    0.418833442
+---------------------------------------------------------------

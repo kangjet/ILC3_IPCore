@@ -1,0 +1,182 @@
+# CoPBit 일일 정리 – 2025-12-04
+
+## 1. 오늘 한 일
+
+### 1) Q16 / Q16b / Q16c – p_ref + Kuramoto (AWGN, no-ISI)
+
+- **Q16 (2-lane: 1 p_ref + 1 data, no-ISI + AWGN + phase noise)**  
+  - theta_std_deg = 0, 1, 3, 5° 에 대해 BER 측정.
+  - 공통 위상 노이즈만 있을 때:
+    - No PLL: BER ≈ 0.5 근처 (완전 랜덤 판정 수준)
+    - Data-DD only: 일부 케이스에서 잠깐 좋아지는 듯하지만, 전체적으로 불안정/균일하지 않음.
+    - Data + p_ref: theta_std_deg가 1~3° 범위에서는 **BER이 10⁻² ~ 10⁻³ 수준까지 안정적으로 떨어짐**.
+  - 결론: **2-lane 구조에서 p_ref 1개만으로도 공통 위상 노이즈에 대해 안정적인 Kuramoto식 위상 잠금이 가능**하다는 것을 확인.
+
+- **Q16b (3-lane: 2 p_ref + 1 data, no-ISI + AWGN + phase noise)**  
+  - theta_std_deg = 1, 3, 5° 에 대해 동일 실험.
+  - 1 p_ref vs 2 p_ref 비교 결과:
+    - BER_DD+pRef (또는 2pRef) 값이 2-lane 대비 **아주 조금 개선되거나 거의 동일**.
+  - 결론: **p_ref lane을 1개에서 2개로 늘려도 큰 추가 이득은 없다.**  
+    → “Kuramoto PhaseLock_std 입장에서는 p_ref 1개로도 충분히 잠금이 걸린다”는 근거 강화.
+
+- **Q16c (Multi-lane: N_ref p_ref + N_data data, no-ISI + AWGN + phase noise)**  
+  - (N_ref, N_data) = (1,1), (2,1), (8,56) 등으로 확장 테스트.
+  - theta_std_deg = 3° 기준에서:
+    - No PLL / Data-DD only: 여전히 BER ≈ 0.5 근처.
+    - Data + p_ref:
+      - (1,1), (2,1), (8,56) 모두 BER ≈ 3~4 × 10⁻² 영역으로 수렴.
+      - p_ref lane 수를 늘려도 **근본적인 PhaseLock_std 바닥값은 거의 동일**.
+  - 결론: **“1 p_ref lane + Kuramoto”가 multi-lane CoPBit의 기본 설계 단위**로 충분하다는 방향이 잡힘.  
+    p_ref를 여러 개 두는 전략은 복잡도만 올리고, 성능 이득은 크지 않음.
+
+### 2) Q16_midISI / Q16d – mid-ISI + FFE + phase noise (기초 점검)
+
+- mid-ISI 채널 (Channel-b 5-tap) + FFE 환경에서 2-lane (p_ref + data) 및 multi-lane 구조를 테스트.
+- 초기 구현에서는:
+  - FFE 적응 파라미터 오류 / 구현 디테일 문제로 인해 **BER ≈ 0.5** 가 계속 나옴.
+  - 이는 “Kuramoto 실패”가 아니라, **EQ 자체가 채널을 전혀 equalize하지 못한 상태**라는 것이 드러남.
+- 이후 단일-lane 기준 mid-ISI + FFE만 떼어놓고 재점검:
+  - 안정적인 파라미터/구조에서는 mid-ISI 채널에서 **BER ≈ 0.27 근처의 바닥값**이 나타나는 것을 다시 확인.
+  - p_ref + Kuramoto를 얹은 구조에서는, **PhaseLock_std가 이 바닥값까지 끌어내리는 역할**을 한다는 해석 가능.
+
+### 3) Q17a / Q17b – p_ref 밀도 및 p_ref 위상 분산 효과
+
+- **Q17a: p_ref 밀도 vs θ_std_deg vs Eb/N0 맵 (AWGN + phase noise, no-ISI)**  
+  - (N_ref / N_total), theta_std_deg, Eb/N0를 바꿔가며 **PhaseLock_std가 유지되는 영역**을 맵으로 뽑음.
+  - 결과 요약:
+    - p_ref가 1개만 있어도, theta_std_deg가 일정 범위(수 도(deg) 수준)까지는 BER이 10⁻² ~ 10⁻³ 수준으로 유지.
+    - p_ref 개수를 늘려도 “잠금이 유지되는 θ 범위”가 크게 넓어지지 않음.
+  - 정리:
+    - **CoPBit PhaseLock_std 모드에서 필요한 것은 “충분한 p_ref 에너지”이지, p_ref의 개수 자체가 아니다.**
+    - 1개 참조 레인을 기준으로 설계하는 것이 효율적.
+
+- **Q17b: p_ref 위상 분산 (multi-phase p_ref)**  
+  - 지금까지는 p_ref lane들이 **동일한 위상 (같은 8-PSK index)** 를 사용하는 모델이었다.
+  - Q17b에서는 p_ref 여러 개를 서로 다른 위상(8-PSK 상의 여러 점)에 두고, 그 평균 위상을 기준으로 Kuramoto 스타일 잠금을 시도.
+  - 결과:
+    - 위상 분산을 줘도 BER 측면에서 **크게 나아지지 않음**.
+    - 오히려 참조 위상이 퍼지면, 레퍼런스 자체가 흐려져서 이득이 줄어들 위험도 있음.
+  - 결론:
+    - **“1개의 강한 p_ref 축”이 가장 효과적인 설계.**
+    - multi-phase p_ref는 Kuramoto 잠금 관점에서 큰 이득이 없다고 정리.
+
+- 문서 작업:
+  - `CoPBit_Q16_2lane_pRef_AWGN_PhaseNoise_v0.1.md`
+  - `CoPBit_Q16_PhaseLock_std_Summary_v0.1.md`
+  - `CoPBit_PhaseLock_std_Mode_v0.1.docs`  
+    등을 업데이트/정리하면서, **CoPBit PhaseLock_std 설계 룰**을 개념적으로 정리.
+
+### 4) Q18 / Q20 – mid-ISI + EQ 기반 PAM4 vs M8 기준선 시도
+
+- **Q18: copbit_q18_pam4_vs_m8_midISI_ffe_only_v0.py**
+  - 채널: mid-ISI (Channel-b 5-tap)
+  - EQ: FFE-only, NLMS/LMS 혼합 스타일 업데이트
+  - 여러 파라미터(mu_ffe, train_frac 등)를 시도했으나:
+    - FFE 계수가 자주 폭발해서 업데이트 중단.
+    - 폭발을 막아도, BER_PAM4_FFE, BER_M8_FFE 둘 다 **≈ 0.5 근처**에서 거의 변하지 않음.
+  - 결론: **이 상태의 FFE 설계로는 채널을 거의 equalize하지 못하고, 기준선으로 사용할 수 없음.**
+
+- **Q20a: copbit_q20a_pam4_vs_m8_midISI_ffe_dfe_v0.py**
+  - FFE + DFE (정규화 LMS 기반이라고 명시)
+  - 하지만 구현 상:
+    - NLMS 정규화가 충분히 강하지 않고,
+    - mu_ffe와 train_frac 설정 때문에 FFE/DFE 계수가 자주 폭발.
+  - 결과:
+    - PAM4와 M8 모두 Eb/N0를 바꾸어도 BER이 0.49~0.51 근처를 맴도는, **거의 랜덤 추측 수준의 성능**.
+  - 여기서 확인한 것:
+    - 문제의 원인은 CoPBit 개념이 아니라, **“mid-ISI에서 안정적으로 동작하는 EQ 설계가 아직 완성되지 않았다”** 는 점.
+
+---
+
+## 2. 핵심 인사이트 정리
+
+1. **Kuramoto + 1 p_ref lane의 충분성**
+   - no-ISI + AWGN + phase noise 환경에서, 2-lane 및 multi-lane 테스트(Q16, Q16b, Q16c) 결과:
+     - p_ref 1개만으로도 **공통 위상 노이즈에 대해 안정적인 PhaseLock_std 모드 구현 가능**.
+     - p_ref 레인을 여러 개 두거나, 여러 위상으로 분산해도 이득은 매우 제한적.
+   - 설계 룰:
+     - **Tile(예: 64-lane)당 “1 p_ref lane”을 두는 것이 CoPBit PhaseLock_std 기본 구조**로 적합.
+
+2. **PhaseLock_std 바닥값과 EQ 한계**
+   - mid-ISI + FFE 환경에서는, EQ가 제대로 동작할 경우 PAM4/M8 모두 **BER ≈ 0.27 근처 바닥**이 존재.
+   - p_ref + Kuramoto는 이 바닥값까지 **PhaseLock_std 관점에서 BER을 끌어내리는 역할**을 할 뿐,
+     EQ 자체가 더 좋아지지 않는 이상 그 아래로 떨어뜨리기 어렵다.
+   - 의미:
+     - CoPBit의 위상 측면 이득과, 진폭/ISI 측면에서의 EQ 이득을 분리해서 봐야 한다.
+
+3. **mid-ISI 기준선의 필요성**
+   - 현재 Q18, Q20a에서 보는 BER ≈ 0.5 결과는 “CoPBit 실패”가 아니라,
+     **“FFE/DFE 설계가 제대로 안 돼서 채널을 전혀 equalize하지 못한 상태”** 임을 확인.
+   - 따라서, CoPBit vs PAM4/M8 비교 이전에:
+     - **“PAM4-only mid-ISI + EQ baseline”** 을 먼저 확립해야 함.
+     - 이 baseline에서 BER ≈ 0.27 수준을 달성한 후에야, M8/CoPBit와 공정한 비교가 가능.
+
+---
+
+## 3. 내일 할 일 계획 (To-do)
+
+### (A) PAM4 mid-ISI + EQ 기준선 다시 설계 (최우선)
+
+1. **PAM4-only 스크립트 분리**
+   - `copbit_q20a_pam4_vs_m8_midISI_ffe_dfe_v0.py`에서 M8 관련 부분을 잠시 꺼두고,
+   - `copbit_q20b_pam4_midISI_ffe_baseline_v0.py` (가칭) 같은 **PAM4 전용 mid-ISI + FFE** 스크립트를 만들기.
+   - 구조:
+     - 채널: `get_mid_isi_channel()` (Channel-b 5-tap)
+     - EQ: FFE-only (우선 DFE는 끄고 시작)
+     - 트레이닝: 선형 training 구간 + 이후 decision-directed 업데이트 여부는 옵션으로.
+
+2. **LMS / NLMS 파라미터 스윕**
+   - **LMS 스타일:**
+     - 업데이트: `w = w + mu * e * u_conj`
+     - 후보:
+       - `mu = 0.0005, 0.001, 0.002` 정도부터 시작.
+       - `train_frac = 0.3` 또는 `0.5` (앞 30~50%만 학습).
+   - **NLMS 스타일:**
+     - 업데이트:  
+       `mu_eff = mu_ffe / (||u||² + eps)`  
+       `w = w + mu_eff * e * u_conj`
+     - 후보:
+       - `mu_ffe = 0.05, 0.1, 0.2` 수준으로 스윕.
+   - 목표:
+     - Eb/N0 8~20 dB 구간에서 PAM4 mid-ISI + FFE-only로 **BER ≈ 0.27 바닥**이 형성되는 파라미터 조합 찾기.
+     - 이때는 weight explosion 경고가 **전혀 나오지 않는 영역**을 우선 채택.
+
+3. **폭발 방지 및 학습 전략 정리**
+   - weight clip 조건은 유지하되,
+     - “폭발 여부로 디버그”가 아니라, **애초에 폭발이 안 나는 파라미터 영역**을 찾는 것이 목표.
+   - 필요시:
+     - 학습 구간을 초기 N_train 심볼(예: 20k ~ 50k)로 제한하고, 이후 업데이트 OFF.
+     - 또는, SNR이 낮은 구간에서만 학습하고 높은 SNR에선 고정 계수 사용 등도 옵션으로 고려.
+
+### (B) PAM4 기준선 확정 후 M8 / CoPBit 비교
+
+1. **동일 EQ 구조로 M8 적용**
+   - (A)에서 찾은 최적 FFE 설정 그대로:
+     - PAM4 vs M8 (8-PSK) 한 레인 기준 BER vs Eb/N0 곡선 측정.
+   - 비교 포인트:
+     - 동일 mid-ISI + EQ 조건에서 **PAM4와 M8이 각각 어느 Eb/N0에서 1e-3 근처**에 도달하는지.
+     - 이를 통해, **메모리/버스 응용에서 CoPBit(M8)가 PAM4 대비 가질 수 있는 SNR 이득** 정량화.
+
+2. **문서화**
+   - 위 결과를 `CoPBit_Q18_PAM4_M8_midISI_EQ_Baseline_v0.1.md` (가칭)로 정리.
+   - 이후 Q16/Q17에서 만든 PhaseLock_std 설계 룰과 연결해서,
+     - “연산용 PPU (초근거리 버스, 상대적으로 ISI 약한 환경)”
+     - “메모리 IO / 데이터 버스 (ISI 강한 환경)”
+     - 두 시나리오별 CoPBit 설계 가이드 초안 작성.
+
+### (C) 장기 과제 메모 (오늘 내용 정리 연장선)
+
+- **PPU(Phase Processing Unit) 관점:**
+  - 현재까지 AWGN + phase noise 실험(Q16/Q17) 결과만으로도,
+    - **초근거리, 상대적으로 ISI가 약한 연산용 버스/내부 PPU** 용도로는
+      CoPBit가 실현 가능성이 매우 높다는 그림이 나왔다.
+- **메모리/데이터 버스 관점:**
+  - mid-ISI + EQ가 안정적으로 해결되는 순간,
+    - CoPBit 기반 1024L × n 타일 구조가 **PAM4 이상의 throughput/에너지 효율**을 얻을 여지가 크다.
+  - 이를 위해선 현재 Q18/Q20 단계에서 **PAM4 baseline → M8 baseline → multi-lane + p_ref** 순서로
+    하나씩 계단을 밟아야 한다는 점을 오늘 정리함.
+
+---
+
+오늘은 여기까지.  
+내일은 위 **(A) PAM4 mid-ISI + FFE 기준선 재설계**부터 차근히 들어가면 된다.
