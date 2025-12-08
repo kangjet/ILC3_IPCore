@@ -1,0 +1,806 @@
+#! /opt/homebrew/Cellar/icarus-verilog/12.0/bin/vvp
+:ivl_version "12.0 (stable)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 12;
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/system.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/vhdl_sys.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/vhdl_textio.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/v2005_math.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/va_math.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/v2009.vpi";
+S_0x146057400 .scope package, "$unit" "$unit" 2 1;
+ .timescale 0 0;
+S_0x14603d730 .scope module, "tb_copbit_ppu_3d_mul_tile" "tb_copbit_ppu_3d_mul_tile" 3 7;
+ .timescale -9 -12;
+P_0x146057cb0 .param/l "M" 1 3 9, +C4<00000000000000000000000000001000>;
+P_0x146057cf0 .param/l "NLANES" 1 3 11, +C4<00000000000000000000000000010000>;
+P_0x146057d30 .param/l "WIDTH" 1 3 10, +C4<00000000000000000000000000000011>;
+v0x146078c30 .array "a_arr", 15 0, 2 0;
+v0x146078ce0_0 .var "a_idx_flat", 47 0;
+v0x146078da0 .array "b_arr", 15 0, 2 0;
+v0x146078e50_0 .var "b_idx_flat", 47 0;
+v0x146078f00_0 .var/i "base", 31 0;
+v0x146078fe0_0 .var/i "bit_idx", 31 0;
+v0x146079090_0 .var/i "err_cnt", 31 0;
+v0x146079140 .array "exp_y", 15 0, 2 0;
+v0x1460791e0_0 .var/i "lane", 31 0;
+v0x1460792f0_0 .var/i "vec", 31 0;
+v0x1460793a0_0 .net "y_idx_flat", 47 0, L_0x14607be00;  1 drivers
+v0x146079460_0 .var "y_tmp", 2 0;
+S_0x14603ba40 .scope module, "dut" "copbit_ppu_3d_mul_tile" 3 33, 4 7 0, S_0x14603d730;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 48 "a_idx_flat";
+    .port_info 1 /INPUT 48 "b_idx_flat";
+    .port_info 2 /OUTPUT 48 "y_idx_flat";
+P_0x146057590 .param/l "M" 0 4 8, +C4<00000000000000000000000000001000>;
+P_0x1460575d0 .param/l "NLANES" 0 4 10, +C4<00000000000000000000000000010000>;
+P_0x146057610 .param/l "WIDTH" 0 4 9, +C4<00000000000000000000000000000011>;
+v0x146078550_0 .net "a_idx_flat", 47 0, v0x146078ce0_0;  1 drivers
+v0x1460785f0_0 .net "b_idx_flat", 47 0, v0x146078e50_0;  1 drivers
+v0x1460786a0_0 .net "y_idx_flat", 47 0, L_0x14607be00;  alias, 1 drivers
+L_0x1460794f0 .part v0x146078ce0_0, 0, 3;
+L_0x146079610 .part v0x146078e50_0, 0, 3;
+L_0x146079c00 .part v0x146078ce0_0, 3, 3;
+L_0x146079ce0 .part v0x146078e50_0, 3, 3;
+L_0x14607a290 .part v0x146078ce0_0, 6, 3;
+L_0x14607a3f0 .part v0x146078e50_0, 6, 3;
+L_0x14607a9a0 .part v0x146078ce0_0, 9, 3;
+L_0x14607aac0 .part v0x146078e50_0, 9, 3;
+L_0x14607b010 .part v0x146078ce0_0, 12, 3;
+L_0x14607b140 .part v0x146078e50_0, 12, 3;
+L_0x14607b6d0 .part v0x146078ce0_0, 15, 3;
+L_0x14607b810 .part v0x146078e50_0, 15, 3;
+L_0x14607bd20 .part v0x146078ce0_0, 18, 3;
+L_0x14607bf70 .part v0x146078e50_0, 18, 3;
+L_0x14607c480 .part v0x146078ce0_0, 21, 3;
+L_0x14607c5e0 .part v0x146078e50_0, 21, 3;
+L_0x14607cae0 .part v0x146078ce0_0, 24, 3;
+L_0x14607cc50 .part v0x146078e50_0, 24, 3;
+L_0x14607d1f0 .part v0x146078ce0_0, 27, 3;
+L_0x14607d370 .part v0x146078e50_0, 27, 3;
+L_0x14607d850 .part v0x146078ce0_0, 30, 3;
+L_0x14607d2d0 .part v0x146078e50_0, 30, 3;
+L_0x14607de90 .part v0x146078ce0_0, 33, 3;
+L_0x14607e030 .part v0x146078e50_0, 33, 3;
+L_0x14607e4f0 .part v0x146078ce0_0, 36, 3;
+L_0x14607e6a0 .part v0x146078e50_0, 36, 3;
+L_0x14607eb60 .part v0x146078ce0_0, 39, 3;
+L_0x14607ed20 .part v0x146078e50_0, 39, 3;
+L_0x14607f1c0 .part v0x146078ce0_0, 42, 3;
+L_0x14607f4a0 .part v0x146078e50_0, 42, 3;
+L_0x14607fa60 .part v0x146078ce0_0, 45, 3;
+L_0x14607fc40 .part v0x146078e50_0, 45, 3;
+LS_0x14607be00_0_0 .concat8 [ 3 3 3 3], L_0x146079730, L_0x146079d80, L_0x14607a510, L_0x14607aba0;
+LS_0x14607be00_0_4 .concat8 [ 3 3 3 3], L_0x14607b1e0, L_0x14607b8f0, L_0x14607c110, L_0x14607bf00;
+LS_0x14607be00_0_8 .concat8 [ 3 3 3 3], L_0x14607c560, L_0x14607cbc0, L_0x14607da20, L_0x14607d930;
+LS_0x14607be00_0_12 .concat8 [ 3 3 3 3], L_0x14607df70, L_0x14607e5d0, L_0x14607ec40, L_0x14607fb40;
+L_0x14607be00 .concat8 [ 12 12 12 12], LS_0x14607be00_0_0, LS_0x14607be00_0_4, LS_0x14607be00_0_8, LS_0x14607be00_0_12;
+S_0x14603b700 .scope generate, "GEN_LANE[0]" "GEN_LANE[0]" 4 19, 4 19 0, S_0x14603ba40;
+ .timescale -9 -12;
+P_0x1460536a0 .param/l "g" 1 4 19, +C4<00>;
+L_0x146079730 .functor BUFZ 3, L_0x1460797e0, C4<000>, C4<000>, C4<000>;
+v0x146066e60_0 .net *"_ivl_3", 2 0, L_0x146079730;  1 drivers
+v0x146066f20_0 .net "a_lane", 2 0, L_0x1460794f0;  1 drivers
+v0x146066fc0_0 .net "b_lane", 2 0, L_0x146079610;  1 drivers
+v0x146067090_0 .net "y_lane", 2 0, L_0x1460797e0;  1 drivers
+S_0x146055480 .scope module, "u_core" "copbit_ppu_3d_mul_core" 4 33, 5 7 0, S_0x14603b700;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 3 "a_idx";
+    .port_info 1 /INPUT 3 "b_idx";
+    .port_info 2 /OUTPUT 3 "y_idx";
+P_0x146055b40 .param/l "M" 0 5 8, +C4<00000000000000000000000000001000>;
+P_0x146055b80 .param/l "POW2" 1 5 18, +C4<00000000000000000000000000001000>;
+P_0x146055bc0 .param/l "PW" 1 5 17, +C4<00000000000000000000000000000110>;
+P_0x146055c00 .param/l "USE_POW2" 1 5 21, +C4<00000000000000000000000000000001>;
+P_0x146055c40 .param/l "WIDTH" 0 5 9, +C4<00000000000000000000000000000011>;
+v0x146055110_0 .net *"_ivl_1", 5 0, L_0x146079880;  1 drivers
+L_0x138068010 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x146066990_0 .net *"_ivl_4", 2 0, L_0x138068010;  1 drivers
+v0x146066a30_0 .net *"_ivl_5", 5 0, L_0x146079960;  1 drivers
+L_0x138068058 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x146066ac0_0 .net *"_ivl_8", 2 0, L_0x138068058;  1 drivers
+v0x146066b50_0 .net "a_idx", 2 0, L_0x1460794f0;  alias, 1 drivers
+v0x146066c20_0 .net "b_idx", 2 0, L_0x146079610;  alias, 1 drivers
+v0x146066cd0_0 .net "prod_full", 5 0, L_0x146079aa0;  1 drivers
+v0x146066d80_0 .net "y_idx", 2 0, L_0x1460797e0;  alias, 1 drivers
+L_0x1460797e0 .part L_0x146079aa0, 0, 3;
+L_0x146079880 .concat [ 3 3 0 0], L_0x1460794f0, L_0x138068010;
+L_0x146079960 .concat [ 3 3 0 0], L_0x146079610, L_0x138068058;
+L_0x146079aa0 .arith/mult 6, L_0x146079880, L_0x146079960;
+S_0x146053500 .scope generate, "GEN_POW2_MOD" "GEN_POW2_MOD" 5 28, 5 28 0, S_0x146055480;
+ .timescale -9 -12;
+S_0x146067140 .scope generate, "GEN_LANE[1]" "GEN_LANE[1]" 4 19, 4 19 0, S_0x14603ba40;
+ .timescale -9 -12;
+P_0x146067300 .param/l "g" 1 4 19, +C4<01>;
+L_0x146079d80 .functor BUFZ 3, L_0x146079e30, C4<000>, C4<000>, C4<000>;
+v0x1460680c0_0 .net *"_ivl_3", 2 0, L_0x146079d80;  1 drivers
+v0x146068180_0 .net "a_lane", 2 0, L_0x146079c00;  1 drivers
+v0x146068220_0 .net "b_lane", 2 0, L_0x146079ce0;  1 drivers
+v0x1460682f0_0 .net "y_lane", 2 0, L_0x146079e30;  1 drivers
+S_0x146067390 .scope module, "u_core" "copbit_ppu_3d_mul_core" 4 33, 5 7 0, S_0x146067140;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 3 "a_idx";
+    .port_info 1 /INPUT 3 "b_idx";
+    .port_info 2 /OUTPUT 3 "y_idx";
+P_0x146067550 .param/l "M" 0 5 8, +C4<00000000000000000000000000001000>;
+P_0x146067590 .param/l "POW2" 1 5 18, +C4<00000000000000000000000000001000>;
+P_0x1460675d0 .param/l "PW" 1 5 17, +C4<00000000000000000000000000000110>;
+P_0x146067610 .param/l "USE_POW2" 1 5 21, +C4<00000000000000000000000000000001>;
+P_0x146067650 .param/l "WIDTH" 0 5 9, +C4<00000000000000000000000000000011>;
+v0x146067b30_0 .net *"_ivl_1", 5 0, L_0x146079ed0;  1 drivers
+L_0x1380680a0 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x146067bf0_0 .net *"_ivl_4", 2 0, L_0x1380680a0;  1 drivers
+v0x146067c90_0 .net *"_ivl_5", 5 0, L_0x146079fd0;  1 drivers
+L_0x1380680e8 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x146067d20_0 .net *"_ivl_8", 2 0, L_0x1380680e8;  1 drivers
+v0x146067db0_0 .net "a_idx", 2 0, L_0x146079c00;  alias, 1 drivers
+v0x146067e80_0 .net "b_idx", 2 0, L_0x146079ce0;  alias, 1 drivers
+v0x146067f30_0 .net "prod_full", 5 0, L_0x14607a130;  1 drivers
+v0x146067fe0_0 .net "y_idx", 2 0, L_0x146079e30;  alias, 1 drivers
+L_0x146079e30 .part L_0x14607a130, 0, 3;
+L_0x146079ed0 .concat [ 3 3 0 0], L_0x146079c00, L_0x1380680a0;
+L_0x146079fd0 .concat [ 3 3 0 0], L_0x146079ce0, L_0x1380680e8;
+L_0x14607a130 .arith/mult 6, L_0x146079ed0, L_0x146079fd0;
+S_0x146067960 .scope generate, "GEN_POW2_MOD" "GEN_POW2_MOD" 5 28, 5 28 0, S_0x146067390;
+ .timescale -9 -12;
+S_0x1460683a0 .scope generate, "GEN_LANE[2]" "GEN_LANE[2]" 4 19, 4 19 0, S_0x14603ba40;
+ .timescale -9 -12;
+P_0x146068580 .param/l "g" 1 4 19, +C4<010>;
+L_0x14607a510 .functor BUFZ 3, L_0x14607a580, C4<000>, C4<000>, C4<000>;
+v0x146069330_0 .net *"_ivl_3", 2 0, L_0x14607a510;  1 drivers
+v0x1460693f0_0 .net "a_lane", 2 0, L_0x14607a290;  1 drivers
+v0x146069490_0 .net "b_lane", 2 0, L_0x14607a3f0;  1 drivers
+v0x146069560_0 .net "y_lane", 2 0, L_0x14607a580;  1 drivers
+S_0x146068600 .scope module, "u_core" "copbit_ppu_3d_mul_core" 4 33, 5 7 0, S_0x1460683a0;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 3 "a_idx";
+    .port_info 1 /INPUT 3 "b_idx";
+    .port_info 2 /OUTPUT 3 "y_idx";
+P_0x1460687c0 .param/l "M" 0 5 8, +C4<00000000000000000000000000001000>;
+P_0x146068800 .param/l "POW2" 1 5 18, +C4<00000000000000000000000000001000>;
+P_0x146068840 .param/l "PW" 1 5 17, +C4<00000000000000000000000000000110>;
+P_0x146068880 .param/l "USE_POW2" 1 5 21, +C4<00000000000000000000000000000001>;
+P_0x1460688c0 .param/l "WIDTH" 0 5 9, +C4<00000000000000000000000000000011>;
+v0x146068da0_0 .net *"_ivl_1", 5 0, L_0x14607a620;  1 drivers
+L_0x138068130 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x146068e60_0 .net *"_ivl_4", 2 0, L_0x138068130;  1 drivers
+v0x146068f00_0 .net *"_ivl_5", 5 0, L_0x14607a740;  1 drivers
+L_0x138068178 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x146068f90_0 .net *"_ivl_8", 2 0, L_0x138068178;  1 drivers
+v0x146069020_0 .net "a_idx", 2 0, L_0x14607a290;  alias, 1 drivers
+v0x1460690f0_0 .net "b_idx", 2 0, L_0x14607a3f0;  alias, 1 drivers
+v0x1460691a0_0 .net "prod_full", 5 0, L_0x14607a840;  1 drivers
+v0x146069250_0 .net "y_idx", 2 0, L_0x14607a580;  alias, 1 drivers
+L_0x14607a580 .part L_0x14607a840, 0, 3;
+L_0x14607a620 .concat [ 3 3 0 0], L_0x14607a290, L_0x138068130;
+L_0x14607a740 .concat [ 3 3 0 0], L_0x14607a3f0, L_0x138068178;
+L_0x14607a840 .arith/mult 6, L_0x14607a620, L_0x14607a740;
+S_0x146068bd0 .scope generate, "GEN_POW2_MOD" "GEN_POW2_MOD" 5 28, 5 28 0, S_0x146068600;
+ .timescale -9 -12;
+S_0x146069610 .scope generate, "GEN_LANE[3]" "GEN_LANE[3]" 4 19, 4 19 0, S_0x14603ba40;
+ .timescale -9 -12;
+P_0x1460697d0 .param/l "g" 1 4 19, +C4<011>;
+L_0x14607aba0 .functor BUFZ 3, L_0x14607ac50, C4<000>, C4<000>, C4<000>;
+v0x14606a590_0 .net *"_ivl_3", 2 0, L_0x14607aba0;  1 drivers
+v0x14606a650_0 .net "a_lane", 2 0, L_0x14607a9a0;  1 drivers
+v0x14606a6f0_0 .net "b_lane", 2 0, L_0x14607aac0;  1 drivers
+v0x14606a7c0_0 .net "y_lane", 2 0, L_0x14607ac50;  1 drivers
+S_0x146069860 .scope module, "u_core" "copbit_ppu_3d_mul_core" 4 33, 5 7 0, S_0x146069610;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 3 "a_idx";
+    .port_info 1 /INPUT 3 "b_idx";
+    .port_info 2 /OUTPUT 3 "y_idx";
+P_0x146069a20 .param/l "M" 0 5 8, +C4<00000000000000000000000000001000>;
+P_0x146069a60 .param/l "POW2" 1 5 18, +C4<00000000000000000000000000001000>;
+P_0x146069aa0 .param/l "PW" 1 5 17, +C4<00000000000000000000000000000110>;
+P_0x146069ae0 .param/l "USE_POW2" 1 5 21, +C4<00000000000000000000000000000001>;
+P_0x146069b20 .param/l "WIDTH" 0 5 9, +C4<00000000000000000000000000000011>;
+v0x14606a000_0 .net *"_ivl_1", 5 0, L_0x14607acf0;  1 drivers
+L_0x1380681c0 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x14606a0c0_0 .net *"_ivl_4", 2 0, L_0x1380681c0;  1 drivers
+v0x14606a160_0 .net *"_ivl_5", 5 0, L_0x14607add0;  1 drivers
+L_0x138068208 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x14606a1f0_0 .net *"_ivl_8", 2 0, L_0x138068208;  1 drivers
+v0x14606a280_0 .net "a_idx", 2 0, L_0x14607a9a0;  alias, 1 drivers
+v0x14606a350_0 .net "b_idx", 2 0, L_0x14607aac0;  alias, 1 drivers
+v0x14606a400_0 .net "prod_full", 5 0, L_0x14607aeb0;  1 drivers
+v0x14606a4b0_0 .net "y_idx", 2 0, L_0x14607ac50;  alias, 1 drivers
+L_0x14607ac50 .part L_0x14607aeb0, 0, 3;
+L_0x14607acf0 .concat [ 3 3 0 0], L_0x14607a9a0, L_0x1380681c0;
+L_0x14607add0 .concat [ 3 3 0 0], L_0x14607aac0, L_0x138068208;
+L_0x14607aeb0 .arith/mult 6, L_0x14607acf0, L_0x14607add0;
+S_0x146069e30 .scope generate, "GEN_POW2_MOD" "GEN_POW2_MOD" 5 28, 5 28 0, S_0x146069860;
+ .timescale -9 -12;
+S_0x14606a870 .scope generate, "GEN_LANE[4]" "GEN_LANE[4]" 4 19, 4 19 0, S_0x14603ba40;
+ .timescale -9 -12;
+P_0x14606aa70 .param/l "g" 1 4 19, +C4<0100>;
+L_0x14607b1e0 .functor BUFZ 3, L_0x14607b290, C4<000>, C4<000>, C4<000>;
+v0x14606b810_0 .net *"_ivl_3", 2 0, L_0x14607b1e0;  1 drivers
+v0x14606b8d0_0 .net "a_lane", 2 0, L_0x14607b010;  1 drivers
+v0x14606b970_0 .net "b_lane", 2 0, L_0x14607b140;  1 drivers
+v0x14606ba40_0 .net "y_lane", 2 0, L_0x14607b290;  1 drivers
+S_0x14606ab00 .scope module, "u_core" "copbit_ppu_3d_mul_core" 4 33, 5 7 0, S_0x14606a870;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 3 "a_idx";
+    .port_info 1 /INPUT 3 "b_idx";
+    .port_info 2 /OUTPUT 3 "y_idx";
+P_0x14606acc0 .param/l "M" 0 5 8, +C4<00000000000000000000000000001000>;
+P_0x14606ad00 .param/l "POW2" 1 5 18, +C4<00000000000000000000000000001000>;
+P_0x14606ad40 .param/l "PW" 1 5 17, +C4<00000000000000000000000000000110>;
+P_0x14606ad80 .param/l "USE_POW2" 1 5 21, +C4<00000000000000000000000000000001>;
+P_0x14606adc0 .param/l "WIDTH" 0 5 9, +C4<00000000000000000000000000000011>;
+v0x14606b280_0 .net *"_ivl_1", 5 0, L_0x14607b330;  1 drivers
+L_0x138068250 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x14606b340_0 .net *"_ivl_4", 2 0, L_0x138068250;  1 drivers
+v0x14606b3e0_0 .net *"_ivl_5", 5 0, L_0x14607b490;  1 drivers
+L_0x138068298 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x14606b470_0 .net *"_ivl_8", 2 0, L_0x138068298;  1 drivers
+v0x14606b500_0 .net "a_idx", 2 0, L_0x14607b010;  alias, 1 drivers
+v0x14606b5d0_0 .net "b_idx", 2 0, L_0x14607b140;  alias, 1 drivers
+v0x14606b680_0 .net "prod_full", 5 0, L_0x14607b570;  1 drivers
+v0x14606b730_0 .net "y_idx", 2 0, L_0x14607b290;  alias, 1 drivers
+L_0x14607b290 .part L_0x14607b570, 0, 3;
+L_0x14607b330 .concat [ 3 3 0 0], L_0x14607b010, L_0x138068250;
+L_0x14607b490 .concat [ 3 3 0 0], L_0x14607b140, L_0x138068298;
+L_0x14607b570 .arith/mult 6, L_0x14607b330, L_0x14607b490;
+S_0x14606b0b0 .scope generate, "GEN_POW2_MOD" "GEN_POW2_MOD" 5 28, 5 28 0, S_0x14606ab00;
+ .timescale -9 -12;
+S_0x14606baf0 .scope generate, "GEN_LANE[5]" "GEN_LANE[5]" 4 19, 4 19 0, S_0x14603ba40;
+ .timescale -9 -12;
+P_0x14606bcb0 .param/l "g" 1 4 19, +C4<0101>;
+L_0x14607b8f0 .functor BUFZ 3, L_0x14607b960, C4<000>, C4<000>, C4<000>;
+v0x14606ca70_0 .net *"_ivl_3", 2 0, L_0x14607b8f0;  1 drivers
+v0x14606cb30_0 .net "a_lane", 2 0, L_0x14607b6d0;  1 drivers
+v0x14606cbd0_0 .net "b_lane", 2 0, L_0x14607b810;  1 drivers
+v0x14606cca0_0 .net "y_lane", 2 0, L_0x14607b960;  1 drivers
+S_0x14606bd40 .scope module, "u_core" "copbit_ppu_3d_mul_core" 4 33, 5 7 0, S_0x14606baf0;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 3 "a_idx";
+    .port_info 1 /INPUT 3 "b_idx";
+    .port_info 2 /OUTPUT 3 "y_idx";
+P_0x14606bf00 .param/l "M" 0 5 8, +C4<00000000000000000000000000001000>;
+P_0x14606bf40 .param/l "POW2" 1 5 18, +C4<00000000000000000000000000001000>;
+P_0x14606bf80 .param/l "PW" 1 5 17, +C4<00000000000000000000000000000110>;
+P_0x14606bfc0 .param/l "USE_POW2" 1 5 21, +C4<00000000000000000000000000000001>;
+P_0x14606c000 .param/l "WIDTH" 0 5 9, +C4<00000000000000000000000000000011>;
+v0x14606c4e0_0 .net *"_ivl_1", 5 0, L_0x14607ba00;  1 drivers
+L_0x1380682e0 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x14606c5a0_0 .net *"_ivl_4", 2 0, L_0x1380682e0;  1 drivers
+v0x14606c640_0 .net *"_ivl_5", 5 0, L_0x14607bae0;  1 drivers
+L_0x138068328 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x14606c6d0_0 .net *"_ivl_8", 2 0, L_0x138068328;  1 drivers
+v0x14606c760_0 .net "a_idx", 2 0, L_0x14607b6d0;  alias, 1 drivers
+v0x14606c830_0 .net "b_idx", 2 0, L_0x14607b810;  alias, 1 drivers
+v0x14606c8e0_0 .net "prod_full", 5 0, L_0x14607bbc0;  1 drivers
+v0x14606c990_0 .net "y_idx", 2 0, L_0x14607b960;  alias, 1 drivers
+L_0x14607b960 .part L_0x14607bbc0, 0, 3;
+L_0x14607ba00 .concat [ 3 3 0 0], L_0x14607b6d0, L_0x1380682e0;
+L_0x14607bae0 .concat [ 3 3 0 0], L_0x14607b810, L_0x138068328;
+L_0x14607bbc0 .arith/mult 6, L_0x14607ba00, L_0x14607bae0;
+S_0x14606c310 .scope generate, "GEN_POW2_MOD" "GEN_POW2_MOD" 5 28, 5 28 0, S_0x14606bd40;
+ .timescale -9 -12;
+S_0x14606cd50 .scope generate, "GEN_LANE[6]" "GEN_LANE[6]" 4 19, 4 19 0, S_0x14603ba40;
+ .timescale -9 -12;
+P_0x14606cf10 .param/l "g" 1 4 19, +C4<0110>;
+L_0x14607c110 .functor BUFZ 3, L_0x14607c180, C4<000>, C4<000>, C4<000>;
+v0x14606dcd0_0 .net *"_ivl_3", 2 0, L_0x14607c110;  1 drivers
+v0x14606dd90_0 .net "a_lane", 2 0, L_0x14607bd20;  1 drivers
+v0x14606de30_0 .net "b_lane", 2 0, L_0x14607bf70;  1 drivers
+v0x14606df00_0 .net "y_lane", 2 0, L_0x14607c180;  1 drivers
+S_0x14606cfa0 .scope module, "u_core" "copbit_ppu_3d_mul_core" 4 33, 5 7 0, S_0x14606cd50;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 3 "a_idx";
+    .port_info 1 /INPUT 3 "b_idx";
+    .port_info 2 /OUTPUT 3 "y_idx";
+P_0x14606d160 .param/l "M" 0 5 8, +C4<00000000000000000000000000001000>;
+P_0x14606d1a0 .param/l "POW2" 1 5 18, +C4<00000000000000000000000000001000>;
+P_0x14606d1e0 .param/l "PW" 1 5 17, +C4<00000000000000000000000000000110>;
+P_0x14606d220 .param/l "USE_POW2" 1 5 21, +C4<00000000000000000000000000000001>;
+P_0x14606d260 .param/l "WIDTH" 0 5 9, +C4<00000000000000000000000000000011>;
+v0x14606d740_0 .net *"_ivl_1", 5 0, L_0x14607c220;  1 drivers
+L_0x138068370 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x14606d800_0 .net *"_ivl_4", 2 0, L_0x138068370;  1 drivers
+v0x14606d8a0_0 .net *"_ivl_5", 5 0, L_0x14607c2c0;  1 drivers
+L_0x1380683b8 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x14606d930_0 .net *"_ivl_8", 2 0, L_0x1380683b8;  1 drivers
+v0x14606d9c0_0 .net "a_idx", 2 0, L_0x14607bd20;  alias, 1 drivers
+v0x14606da90_0 .net "b_idx", 2 0, L_0x14607bf70;  alias, 1 drivers
+v0x14606db40_0 .net "prod_full", 5 0, L_0x14607c360;  1 drivers
+v0x14606dbf0_0 .net "y_idx", 2 0, L_0x14607c180;  alias, 1 drivers
+L_0x14607c180 .part L_0x14607c360, 0, 3;
+L_0x14607c220 .concat [ 3 3 0 0], L_0x14607bd20, L_0x138068370;
+L_0x14607c2c0 .concat [ 3 3 0 0], L_0x14607bf70, L_0x1380683b8;
+L_0x14607c360 .arith/mult 6, L_0x14607c220, L_0x14607c2c0;
+S_0x14606d570 .scope generate, "GEN_POW2_MOD" "GEN_POW2_MOD" 5 28, 5 28 0, S_0x14606cfa0;
+ .timescale -9 -12;
+S_0x14606dfb0 .scope generate, "GEN_LANE[7]" "GEN_LANE[7]" 4 19, 4 19 0, S_0x14603ba40;
+ .timescale -9 -12;
+P_0x14606e170 .param/l "g" 1 4 19, +C4<0111>;
+L_0x14607bf00 .functor BUFZ 3, L_0x14607c700, C4<000>, C4<000>, C4<000>;
+v0x14606ef30_0 .net *"_ivl_3", 2 0, L_0x14607bf00;  1 drivers
+v0x14606eff0_0 .net "a_lane", 2 0, L_0x14607c480;  1 drivers
+v0x14606f090_0 .net "b_lane", 2 0, L_0x14607c5e0;  1 drivers
+v0x14606f160_0 .net "y_lane", 2 0, L_0x14607c700;  1 drivers
+S_0x14606e200 .scope module, "u_core" "copbit_ppu_3d_mul_core" 4 33, 5 7 0, S_0x14606dfb0;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 3 "a_idx";
+    .port_info 1 /INPUT 3 "b_idx";
+    .port_info 2 /OUTPUT 3 "y_idx";
+P_0x14606e3c0 .param/l "M" 0 5 8, +C4<00000000000000000000000000001000>;
+P_0x14606e400 .param/l "POW2" 1 5 18, +C4<00000000000000000000000000001000>;
+P_0x14606e440 .param/l "PW" 1 5 17, +C4<00000000000000000000000000000110>;
+P_0x14606e480 .param/l "USE_POW2" 1 5 21, +C4<00000000000000000000000000000001>;
+P_0x14606e4c0 .param/l "WIDTH" 0 5 9, +C4<00000000000000000000000000000011>;
+v0x14606e9a0_0 .net *"_ivl_1", 5 0, L_0x14607c7a0;  1 drivers
+L_0x138068400 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x14606ea60_0 .net *"_ivl_4", 2 0, L_0x138068400;  1 drivers
+v0x14606eb00_0 .net *"_ivl_5", 5 0, L_0x14607c880;  1 drivers
+L_0x138068448 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x14606eb90_0 .net *"_ivl_8", 2 0, L_0x138068448;  1 drivers
+v0x14606ec20_0 .net "a_idx", 2 0, L_0x14607c480;  alias, 1 drivers
+v0x14606ecf0_0 .net "b_idx", 2 0, L_0x14607c5e0;  alias, 1 drivers
+v0x14606eda0_0 .net "prod_full", 5 0, L_0x14607c980;  1 drivers
+v0x14606ee50_0 .net "y_idx", 2 0, L_0x14607c700;  alias, 1 drivers
+L_0x14607c700 .part L_0x14607c980, 0, 3;
+L_0x14607c7a0 .concat [ 3 3 0 0], L_0x14607c480, L_0x138068400;
+L_0x14607c880 .concat [ 3 3 0 0], L_0x14607c5e0, L_0x138068448;
+L_0x14607c980 .arith/mult 6, L_0x14607c7a0, L_0x14607c880;
+S_0x14606e7d0 .scope generate, "GEN_POW2_MOD" "GEN_POW2_MOD" 5 28, 5 28 0, S_0x14606e200;
+ .timescale -9 -12;
+S_0x14606f210 .scope generate, "GEN_LANE[8]" "GEN_LANE[8]" 4 19, 4 19 0, S_0x14603ba40;
+ .timescale -9 -12;
+P_0x14606aa30 .param/l "g" 1 4 19, +C4<01000>;
+L_0x14607c560 .functor BUFZ 3, L_0x14607cd70, C4<000>, C4<000>, C4<000>;
+v0x1460701d0_0 .net *"_ivl_3", 2 0, L_0x14607c560;  1 drivers
+v0x146070290_0 .net "a_lane", 2 0, L_0x14607cae0;  1 drivers
+v0x146070330_0 .net "b_lane", 2 0, L_0x14607cc50;  1 drivers
+v0x146070400_0 .net "y_lane", 2 0, L_0x14607cd70;  1 drivers
+S_0x14606f4b0 .scope module, "u_core" "copbit_ppu_3d_mul_core" 4 33, 5 7 0, S_0x14606f210;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 3 "a_idx";
+    .port_info 1 /INPUT 3 "b_idx";
+    .port_info 2 /OUTPUT 3 "y_idx";
+P_0x14606f680 .param/l "M" 0 5 8, +C4<00000000000000000000000000001000>;
+P_0x14606f6c0 .param/l "POW2" 1 5 18, +C4<00000000000000000000000000001000>;
+P_0x14606f700 .param/l "PW" 1 5 17, +C4<00000000000000000000000000000110>;
+P_0x14606f740 .param/l "USE_POW2" 1 5 21, +C4<00000000000000000000000000000001>;
+P_0x14606f780 .param/l "WIDTH" 0 5 9, +C4<00000000000000000000000000000011>;
+v0x14606fc40_0 .net *"_ivl_1", 5 0, L_0x14607ce10;  1 drivers
+L_0x138068490 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x14606fd00_0 .net *"_ivl_4", 2 0, L_0x138068490;  1 drivers
+v0x14606fda0_0 .net *"_ivl_5", 5 0, L_0x14607cff0;  1 drivers
+L_0x1380684d8 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x14606fe30_0 .net *"_ivl_8", 2 0, L_0x1380684d8;  1 drivers
+v0x14606fec0_0 .net "a_idx", 2 0, L_0x14607cae0;  alias, 1 drivers
+v0x14606ff90_0 .net "b_idx", 2 0, L_0x14607cc50;  alias, 1 drivers
+v0x146070040_0 .net "prod_full", 5 0, L_0x14607d090;  1 drivers
+v0x1460700f0_0 .net "y_idx", 2 0, L_0x14607cd70;  alias, 1 drivers
+L_0x14607cd70 .part L_0x14607d090, 0, 3;
+L_0x14607ce10 .concat [ 3 3 0 0], L_0x14607cae0, L_0x138068490;
+L_0x14607cff0 .concat [ 3 3 0 0], L_0x14607cc50, L_0x1380684d8;
+L_0x14607d090 .arith/mult 6, L_0x14607ce10, L_0x14607cff0;
+S_0x14606fa70 .scope generate, "GEN_POW2_MOD" "GEN_POW2_MOD" 5 28, 5 28 0, S_0x14606f4b0;
+ .timescale -9 -12;
+S_0x1460704b0 .scope generate, "GEN_LANE[9]" "GEN_LANE[9]" 4 19, 4 19 0, S_0x14603ba40;
+ .timescale -9 -12;
+P_0x146070670 .param/l "g" 1 4 19, +C4<01001>;
+L_0x14607cbc0 .functor BUFZ 3, L_0x14607d490, C4<000>, C4<000>, C4<000>;
+v0x146071430_0 .net *"_ivl_3", 2 0, L_0x14607cbc0;  1 drivers
+v0x1460714f0_0 .net "a_lane", 2 0, L_0x14607d1f0;  1 drivers
+v0x146071590_0 .net "b_lane", 2 0, L_0x14607d370;  1 drivers
+v0x146071660_0 .net "y_lane", 2 0, L_0x14607d490;  1 drivers
+S_0x146070710 .scope module, "u_core" "copbit_ppu_3d_mul_core" 4 33, 5 7 0, S_0x1460704b0;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 3 "a_idx";
+    .port_info 1 /INPUT 3 "b_idx";
+    .port_info 2 /OUTPUT 3 "y_idx";
+P_0x1460708e0 .param/l "M" 0 5 8, +C4<00000000000000000000000000001000>;
+P_0x146070920 .param/l "POW2" 1 5 18, +C4<00000000000000000000000000001000>;
+P_0x146070960 .param/l "PW" 1 5 17, +C4<00000000000000000000000000000110>;
+P_0x1460709a0 .param/l "USE_POW2" 1 5 21, +C4<00000000000000000000000000000001>;
+P_0x1460709e0 .param/l "WIDTH" 0 5 9, +C4<00000000000000000000000000000011>;
+v0x146070ea0_0 .net *"_ivl_1", 5 0, L_0x14607d530;  1 drivers
+L_0x138068520 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x146070f60_0 .net *"_ivl_4", 2 0, L_0x138068520;  1 drivers
+v0x146071000_0 .net *"_ivl_5", 5 0, L_0x14607d610;  1 drivers
+L_0x138068568 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x146071090_0 .net *"_ivl_8", 2 0, L_0x138068568;  1 drivers
+v0x146071120_0 .net "a_idx", 2 0, L_0x14607d1f0;  alias, 1 drivers
+v0x1460711f0_0 .net "b_idx", 2 0, L_0x14607d370;  alias, 1 drivers
+v0x1460712a0_0 .net "prod_full", 5 0, L_0x14607d6f0;  1 drivers
+v0x146071350_0 .net "y_idx", 2 0, L_0x14607d490;  alias, 1 drivers
+L_0x14607d490 .part L_0x14607d6f0, 0, 3;
+L_0x14607d530 .concat [ 3 3 0 0], L_0x14607d1f0, L_0x138068520;
+L_0x14607d610 .concat [ 3 3 0 0], L_0x14607d370, L_0x138068568;
+L_0x14607d6f0 .arith/mult 6, L_0x14607d530, L_0x14607d610;
+S_0x146070cd0 .scope generate, "GEN_POW2_MOD" "GEN_POW2_MOD" 5 28, 5 28 0, S_0x146070710;
+ .timescale -9 -12;
+S_0x146071710 .scope generate, "GEN_LANE[10]" "GEN_LANE[10]" 4 19, 4 19 0, S_0x14603ba40;
+ .timescale -9 -12;
+P_0x1460718d0 .param/l "g" 1 4 19, +C4<01010>;
+L_0x14607da20 .functor BUFZ 3, L_0x14607dad0, C4<000>, C4<000>, C4<000>;
+v0x146072690_0 .net *"_ivl_3", 2 0, L_0x14607da20;  1 drivers
+v0x146072750_0 .net "a_lane", 2 0, L_0x14607d850;  1 drivers
+v0x1460727f0_0 .net "b_lane", 2 0, L_0x14607d2d0;  1 drivers
+v0x1460728c0_0 .net "y_lane", 2 0, L_0x14607dad0;  1 drivers
+S_0x146071970 .scope module, "u_core" "copbit_ppu_3d_mul_core" 4 33, 5 7 0, S_0x146071710;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 3 "a_idx";
+    .port_info 1 /INPUT 3 "b_idx";
+    .port_info 2 /OUTPUT 3 "y_idx";
+P_0x146071b40 .param/l "M" 0 5 8, +C4<00000000000000000000000000001000>;
+P_0x146071b80 .param/l "POW2" 1 5 18, +C4<00000000000000000000000000001000>;
+P_0x146071bc0 .param/l "PW" 1 5 17, +C4<00000000000000000000000000000110>;
+P_0x146071c00 .param/l "USE_POW2" 1 5 21, +C4<00000000000000000000000000000001>;
+P_0x146071c40 .param/l "WIDTH" 0 5 9, +C4<00000000000000000000000000000011>;
+v0x146072100_0 .net *"_ivl_1", 5 0, L_0x14607db70;  1 drivers
+L_0x1380685b0 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x1460721c0_0 .net *"_ivl_4", 2 0, L_0x1380685b0;  1 drivers
+v0x146072260_0 .net *"_ivl_5", 5 0, L_0x14607dc50;  1 drivers
+L_0x1380685f8 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x1460722f0_0 .net *"_ivl_8", 2 0, L_0x1380685f8;  1 drivers
+v0x146072380_0 .net "a_idx", 2 0, L_0x14607d850;  alias, 1 drivers
+v0x146072450_0 .net "b_idx", 2 0, L_0x14607d2d0;  alias, 1 drivers
+v0x146072500_0 .net "prod_full", 5 0, L_0x14607dd30;  1 drivers
+v0x1460725b0_0 .net "y_idx", 2 0, L_0x14607dad0;  alias, 1 drivers
+L_0x14607dad0 .part L_0x14607dd30, 0, 3;
+L_0x14607db70 .concat [ 3 3 0 0], L_0x14607d850, L_0x1380685b0;
+L_0x14607dc50 .concat [ 3 3 0 0], L_0x14607d2d0, L_0x1380685f8;
+L_0x14607dd30 .arith/mult 6, L_0x14607db70, L_0x14607dc50;
+S_0x146071f30 .scope generate, "GEN_POW2_MOD" "GEN_POW2_MOD" 5 28, 5 28 0, S_0x146071970;
+ .timescale -9 -12;
+S_0x146072970 .scope generate, "GEN_LANE[11]" "GEN_LANE[11]" 4 19, 4 19 0, S_0x14603ba40;
+ .timescale -9 -12;
+P_0x146072b30 .param/l "g" 1 4 19, +C4<01011>;
+L_0x14607d930 .functor BUFZ 3, L_0x14607e110, C4<000>, C4<000>, C4<000>;
+v0x1460738f0_0 .net *"_ivl_3", 2 0, L_0x14607d930;  1 drivers
+v0x1460739b0_0 .net "a_lane", 2 0, L_0x14607de90;  1 drivers
+v0x146073a50_0 .net "b_lane", 2 0, L_0x14607e030;  1 drivers
+v0x146073b20_0 .net "y_lane", 2 0, L_0x14607e110;  1 drivers
+S_0x146072bd0 .scope module, "u_core" "copbit_ppu_3d_mul_core" 4 33, 5 7 0, S_0x146072970;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 3 "a_idx";
+    .port_info 1 /INPUT 3 "b_idx";
+    .port_info 2 /OUTPUT 3 "y_idx";
+P_0x146072da0 .param/l "M" 0 5 8, +C4<00000000000000000000000000001000>;
+P_0x146072de0 .param/l "POW2" 1 5 18, +C4<00000000000000000000000000001000>;
+P_0x146072e20 .param/l "PW" 1 5 17, +C4<00000000000000000000000000000110>;
+P_0x146072e60 .param/l "USE_POW2" 1 5 21, +C4<00000000000000000000000000000001>;
+P_0x146072ea0 .param/l "WIDTH" 0 5 9, +C4<00000000000000000000000000000011>;
+v0x146073360_0 .net *"_ivl_1", 5 0, L_0x14607e1b0;  1 drivers
+L_0x138068640 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x146073420_0 .net *"_ivl_4", 2 0, L_0x138068640;  1 drivers
+v0x1460734c0_0 .net *"_ivl_5", 5 0, L_0x14607e290;  1 drivers
+L_0x138068688 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x146073550_0 .net *"_ivl_8", 2 0, L_0x138068688;  1 drivers
+v0x1460735e0_0 .net "a_idx", 2 0, L_0x14607de90;  alias, 1 drivers
+v0x1460736b0_0 .net "b_idx", 2 0, L_0x14607e030;  alias, 1 drivers
+v0x146073760_0 .net "prod_full", 5 0, L_0x14607e390;  1 drivers
+v0x146073810_0 .net "y_idx", 2 0, L_0x14607e110;  alias, 1 drivers
+L_0x14607e110 .part L_0x14607e390, 0, 3;
+L_0x14607e1b0 .concat [ 3 3 0 0], L_0x14607de90, L_0x138068640;
+L_0x14607e290 .concat [ 3 3 0 0], L_0x14607e030, L_0x138068688;
+L_0x14607e390 .arith/mult 6, L_0x14607e1b0, L_0x14607e290;
+S_0x146073190 .scope generate, "GEN_POW2_MOD" "GEN_POW2_MOD" 5 28, 5 28 0, S_0x146072bd0;
+ .timescale -9 -12;
+S_0x146073bd0 .scope generate, "GEN_LANE[12]" "GEN_LANE[12]" 4 19, 4 19 0, S_0x14603ba40;
+ .timescale -9 -12;
+P_0x146073d90 .param/l "g" 1 4 19, +C4<01100>;
+L_0x14607df70 .functor BUFZ 3, L_0x14607e780, C4<000>, C4<000>, C4<000>;
+v0x146074b50_0 .net *"_ivl_3", 2 0, L_0x14607df70;  1 drivers
+v0x146074c10_0 .net "a_lane", 2 0, L_0x14607e4f0;  1 drivers
+v0x146074cb0_0 .net "b_lane", 2 0, L_0x14607e6a0;  1 drivers
+v0x146074d80_0 .net "y_lane", 2 0, L_0x14607e780;  1 drivers
+S_0x146073e30 .scope module, "u_core" "copbit_ppu_3d_mul_core" 4 33, 5 7 0, S_0x146073bd0;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 3 "a_idx";
+    .port_info 1 /INPUT 3 "b_idx";
+    .port_info 2 /OUTPUT 3 "y_idx";
+P_0x146074000 .param/l "M" 0 5 8, +C4<00000000000000000000000000001000>;
+P_0x146074040 .param/l "POW2" 1 5 18, +C4<00000000000000000000000000001000>;
+P_0x146074080 .param/l "PW" 1 5 17, +C4<00000000000000000000000000000110>;
+P_0x1460740c0 .param/l "USE_POW2" 1 5 21, +C4<00000000000000000000000000000001>;
+P_0x146074100 .param/l "WIDTH" 0 5 9, +C4<00000000000000000000000000000011>;
+v0x1460745c0_0 .net *"_ivl_1", 5 0, L_0x14607e820;  1 drivers
+L_0x1380686d0 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x146074680_0 .net *"_ivl_4", 2 0, L_0x1380686d0;  1 drivers
+v0x146074720_0 .net *"_ivl_5", 5 0, L_0x14607e900;  1 drivers
+L_0x138068718 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x1460747b0_0 .net *"_ivl_8", 2 0, L_0x138068718;  1 drivers
+v0x146074840_0 .net "a_idx", 2 0, L_0x14607e4f0;  alias, 1 drivers
+v0x146074910_0 .net "b_idx", 2 0, L_0x14607e6a0;  alias, 1 drivers
+v0x1460749c0_0 .net "prod_full", 5 0, L_0x14607ea00;  1 drivers
+v0x146074a70_0 .net "y_idx", 2 0, L_0x14607e780;  alias, 1 drivers
+L_0x14607e780 .part L_0x14607ea00, 0, 3;
+L_0x14607e820 .concat [ 3 3 0 0], L_0x14607e4f0, L_0x1380686d0;
+L_0x14607e900 .concat [ 3 3 0 0], L_0x14607e6a0, L_0x138068718;
+L_0x14607ea00 .arith/mult 6, L_0x14607e820, L_0x14607e900;
+S_0x1460743f0 .scope generate, "GEN_POW2_MOD" "GEN_POW2_MOD" 5 28, 5 28 0, S_0x146073e30;
+ .timescale -9 -12;
+S_0x146074e30 .scope generate, "GEN_LANE[13]" "GEN_LANE[13]" 4 19, 4 19 0, S_0x14603ba40;
+ .timescale -9 -12;
+P_0x146074ff0 .param/l "g" 1 4 19, +C4<01101>;
+L_0x14607e5d0 .functor BUFZ 3, L_0x14607ee00, C4<000>, C4<000>, C4<000>;
+v0x146075db0_0 .net *"_ivl_3", 2 0, L_0x14607e5d0;  1 drivers
+v0x146075e70_0 .net "a_lane", 2 0, L_0x14607eb60;  1 drivers
+v0x146075f10_0 .net "b_lane", 2 0, L_0x14607ed20;  1 drivers
+v0x146075fe0_0 .net "y_lane", 2 0, L_0x14607ee00;  1 drivers
+S_0x146075090 .scope module, "u_core" "copbit_ppu_3d_mul_core" 4 33, 5 7 0, S_0x146074e30;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 3 "a_idx";
+    .port_info 1 /INPUT 3 "b_idx";
+    .port_info 2 /OUTPUT 3 "y_idx";
+P_0x146075260 .param/l "M" 0 5 8, +C4<00000000000000000000000000001000>;
+P_0x1460752a0 .param/l "POW2" 1 5 18, +C4<00000000000000000000000000001000>;
+P_0x1460752e0 .param/l "PW" 1 5 17, +C4<00000000000000000000000000000110>;
+P_0x146075320 .param/l "USE_POW2" 1 5 21, +C4<00000000000000000000000000000001>;
+P_0x146075360 .param/l "WIDTH" 0 5 9, +C4<00000000000000000000000000000011>;
+v0x146075820_0 .net *"_ivl_1", 5 0, L_0x14607eea0;  1 drivers
+L_0x138068760 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x1460758e0_0 .net *"_ivl_4", 2 0, L_0x138068760;  1 drivers
+v0x146075980_0 .net *"_ivl_5", 5 0, L_0x14607ef80;  1 drivers
+L_0x1380687a8 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x146075a10_0 .net *"_ivl_8", 2 0, L_0x1380687a8;  1 drivers
+v0x146075aa0_0 .net "a_idx", 2 0, L_0x14607eb60;  alias, 1 drivers
+v0x146075b70_0 .net "b_idx", 2 0, L_0x14607ed20;  alias, 1 drivers
+v0x146075c20_0 .net "prod_full", 5 0, L_0x14607f060;  1 drivers
+v0x146075cd0_0 .net "y_idx", 2 0, L_0x14607ee00;  alias, 1 drivers
+L_0x14607ee00 .part L_0x14607f060, 0, 3;
+L_0x14607eea0 .concat [ 3 3 0 0], L_0x14607eb60, L_0x138068760;
+L_0x14607ef80 .concat [ 3 3 0 0], L_0x14607ed20, L_0x1380687a8;
+L_0x14607f060 .arith/mult 6, L_0x14607eea0, L_0x14607ef80;
+S_0x146075650 .scope generate, "GEN_POW2_MOD" "GEN_POW2_MOD" 5 28, 5 28 0, S_0x146075090;
+ .timescale -9 -12;
+S_0x146076090 .scope generate, "GEN_LANE[14]" "GEN_LANE[14]" 4 19, 4 19 0, S_0x14603ba40;
+ .timescale -9 -12;
+P_0x146076250 .param/l "g" 1 4 19, +C4<01110>;
+L_0x14607ec40 .functor BUFZ 3, L_0x14607c010, C4<000>, C4<000>, C4<000>;
+v0x146077010_0 .net *"_ivl_3", 2 0, L_0x14607ec40;  1 drivers
+v0x1460770d0_0 .net "a_lane", 2 0, L_0x14607f1c0;  1 drivers
+v0x146077170_0 .net "b_lane", 2 0, L_0x14607f4a0;  1 drivers
+v0x146077240_0 .net "y_lane", 2 0, L_0x14607c010;  1 drivers
+S_0x1460762f0 .scope module, "u_core" "copbit_ppu_3d_mul_core" 4 33, 5 7 0, S_0x146076090;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 3 "a_idx";
+    .port_info 1 /INPUT 3 "b_idx";
+    .port_info 2 /OUTPUT 3 "y_idx";
+P_0x1460764c0 .param/l "M" 0 5 8, +C4<00000000000000000000000000001000>;
+P_0x146076500 .param/l "POW2" 1 5 18, +C4<00000000000000000000000000001000>;
+P_0x146076540 .param/l "PW" 1 5 17, +C4<00000000000000000000000000000110>;
+P_0x146076580 .param/l "USE_POW2" 1 5 21, +C4<00000000000000000000000000000001>;
+P_0x1460765c0 .param/l "WIDTH" 0 5 9, +C4<00000000000000000000000000000011>;
+v0x146076a80_0 .net *"_ivl_1", 5 0, L_0x14607f780;  1 drivers
+L_0x1380687f0 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x146076b40_0 .net *"_ivl_4", 2 0, L_0x1380687f0;  1 drivers
+v0x146076be0_0 .net *"_ivl_5", 5 0, L_0x14607f820;  1 drivers
+L_0x138068838 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x146076c70_0 .net *"_ivl_8", 2 0, L_0x138068838;  1 drivers
+v0x146076d00_0 .net "a_idx", 2 0, L_0x14607f1c0;  alias, 1 drivers
+v0x146076dd0_0 .net "b_idx", 2 0, L_0x14607f4a0;  alias, 1 drivers
+v0x146076e80_0 .net "prod_full", 5 0, L_0x14607f900;  1 drivers
+v0x146076f30_0 .net "y_idx", 2 0, L_0x14607c010;  alias, 1 drivers
+L_0x14607c010 .part L_0x14607f900, 0, 3;
+L_0x14607f780 .concat [ 3 3 0 0], L_0x14607f1c0, L_0x1380687f0;
+L_0x14607f820 .concat [ 3 3 0 0], L_0x14607f4a0, L_0x138068838;
+L_0x14607f900 .arith/mult 6, L_0x14607f780, L_0x14607f820;
+S_0x1460768b0 .scope generate, "GEN_POW2_MOD" "GEN_POW2_MOD" 5 28, 5 28 0, S_0x1460762f0;
+ .timescale -9 -12;
+S_0x1460772f0 .scope generate, "GEN_LANE[15]" "GEN_LANE[15]" 4 19, 4 19 0, S_0x14603ba40;
+ .timescale -9 -12;
+P_0x1460774b0 .param/l "g" 1 4 19, +C4<01111>;
+L_0x14607fb40 .functor BUFZ 3, L_0x146080280, C4<000>, C4<000>, C4<000>;
+v0x146078270_0 .net *"_ivl_3", 2 0, L_0x14607fb40;  1 drivers
+v0x146078330_0 .net "a_lane", 2 0, L_0x14607fa60;  1 drivers
+v0x1460783d0_0 .net "b_lane", 2 0, L_0x14607fc40;  1 drivers
+v0x1460784a0_0 .net "y_lane", 2 0, L_0x146080280;  1 drivers
+S_0x146077550 .scope module, "u_core" "copbit_ppu_3d_mul_core" 4 33, 5 7 0, S_0x1460772f0;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 3 "a_idx";
+    .port_info 1 /INPUT 3 "b_idx";
+    .port_info 2 /OUTPUT 3 "y_idx";
+P_0x146077720 .param/l "M" 0 5 8, +C4<00000000000000000000000000001000>;
+P_0x146077760 .param/l "POW2" 1 5 18, +C4<00000000000000000000000000001000>;
+P_0x1460777a0 .param/l "PW" 1 5 17, +C4<00000000000000000000000000000110>;
+P_0x1460777e0 .param/l "USE_POW2" 1 5 21, +C4<00000000000000000000000000000001>;
+P_0x146077820 .param/l "WIDTH" 0 5 9, +C4<00000000000000000000000000000011>;
+v0x146077ce0_0 .net *"_ivl_1", 5 0, L_0x146080320;  1 drivers
+L_0x138068880 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x146077da0_0 .net *"_ivl_4", 2 0, L_0x138068880;  1 drivers
+v0x146077e40_0 .net *"_ivl_5", 5 0, L_0x146080400;  1 drivers
+L_0x1380688c8 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x146077ed0_0 .net *"_ivl_8", 2 0, L_0x1380688c8;  1 drivers
+v0x146077f60_0 .net "a_idx", 2 0, L_0x14607fa60;  alias, 1 drivers
+v0x146078030_0 .net "b_idx", 2 0, L_0x14607fc40;  alias, 1 drivers
+v0x1460780e0_0 .net "prod_full", 5 0, L_0x1460804e0;  1 drivers
+v0x146078190_0 .net "y_idx", 2 0, L_0x146080280;  alias, 1 drivers
+L_0x146080280 .part L_0x1460804e0, 0, 3;
+L_0x146080320 .concat [ 3 3 0 0], L_0x14607fa60, L_0x138068880;
+L_0x146080400 .concat [ 3 3 0 0], L_0x14607fc40, L_0x1380688c8;
+L_0x1460804e0 .arith/mult 6, L_0x146080320, L_0x146080400;
+S_0x146077b10 .scope generate, "GEN_POW2_MOD" "GEN_POW2_MOD" 5 28, 5 28 0, S_0x146077550;
+ .timescale -9 -12;
+S_0x1460787b0 .scope function.vec4.s3, "mul3d_truth" "mul3d_truth" 3 40, 3 40 0, S_0x14603d730;
+ .timescale -9 -12;
+v0x146078980_0 .var "a", 2 0;
+v0x146078a10_0 .var "b", 2 0;
+; Variable mul3d_truth is vec4 return value of scope S_0x1460787b0
+v0x146078b80_0 .var/i "prod", 31 0;
+TD_tb_copbit_ppu_3d_mul_tile.mul3d_truth ;
+    %load/vec4 v0x146078980_0;
+    %pad/u 32;
+    %load/vec4 v0x146078a10_0;
+    %pad/u 32;
+    %mul;
+    %store/vec4 v0x146078b80_0, 0, 32;
+    %load/vec4 v0x146078b80_0;
+    %pushi/vec4 8, 0, 32;
+    %mod/s;
+    %pad/s 3;
+    %ret/vec4 0, 0, 3;  Assign to mul3d_truth (store_vec4_to_lval)
+    %end;
+    .scope S_0x14603d730;
+T_1 ;
+    %vpi_call/w 3 51 "$display", "=== CoPBit PPU 3D-MUL tile truthcheck (M=%0d, NLANES=%0d) ===", P_0x146057cb0, P_0x146057cf0 {0 0 0};
+    %pushi/vec4 0, 0, 32;
+    %store/vec4 v0x146079090_0, 0, 32;
+    %pushi/vec4 0, 0, 48;
+    %store/vec4 v0x146078ce0_0, 0, 48;
+    %pushi/vec4 0, 0, 48;
+    %store/vec4 v0x146078e50_0, 0, 48;
+    %pushi/vec4 0, 0, 32;
+    %store/vec4 v0x1460792f0_0, 0, 32;
+T_1.0 ;
+    %load/vec4 v0x1460792f0_0;
+    %cmpi/s 8, 0, 32;
+    %jmp/0xz T_1.1, 5;
+    %pushi/vec4 0, 0, 32;
+    %store/vec4 v0x1460791e0_0, 0, 32;
+T_1.2 ;
+    %load/vec4 v0x1460791e0_0;
+    %cmpi/s 16, 0, 32;
+    %jmp/0xz T_1.3, 5;
+    %load/vec4 v0x1460792f0_0;
+    %load/vec4 v0x1460791e0_0;
+    %add;
+    %pushi/vec4 8, 0, 32;
+    %mod/s;
+    %pad/s 3;
+    %ix/getv/s 4, v0x1460791e0_0;
+    %store/vec4a v0x146078c30, 4, 0;
+    %load/vec4 v0x1460792f0_0;
+    %muli 2, 0, 32;
+    %load/vec4 v0x1460791e0_0;
+    %add;
+    %pushi/vec4 8, 0, 32;
+    %mod/s;
+    %pad/s 3;
+    %ix/getv/s 4, v0x1460791e0_0;
+    %store/vec4a v0x146078da0, 4, 0;
+    %ix/getv/s 4, v0x1460791e0_0;
+    %load/vec4a v0x146078c30, 4;
+    %ix/getv/s 4, v0x1460791e0_0;
+    %load/vec4a v0x146078da0, 4;
+    %store/vec4 v0x146078a10_0, 0, 3;
+    %store/vec4 v0x146078980_0, 0, 3;
+    %callf/vec4 TD_tb_copbit_ppu_3d_mul_tile.mul3d_truth, S_0x1460787b0;
+    %ix/getv/s 4, v0x1460791e0_0;
+    %store/vec4a v0x146079140, 4, 0;
+    %load/vec4 v0x1460791e0_0;
+    %addi 1, 0, 32;
+    %store/vec4 v0x1460791e0_0, 0, 32;
+    %jmp T_1.2;
+T_1.3 ;
+    %pushi/vec4 0, 0, 48;
+    %store/vec4 v0x146078ce0_0, 0, 48;
+    %pushi/vec4 0, 0, 48;
+    %store/vec4 v0x146078e50_0, 0, 48;
+    %pushi/vec4 0, 0, 32;
+    %store/vec4 v0x1460791e0_0, 0, 32;
+T_1.4 ;
+    %load/vec4 v0x1460791e0_0;
+    %cmpi/s 16, 0, 32;
+    %jmp/0xz T_1.5, 5;
+    %load/vec4 v0x1460791e0_0;
+    %muli 3, 0, 32;
+    %store/vec4 v0x146078f00_0, 0, 32;
+    %pushi/vec4 0, 0, 32;
+    %store/vec4 v0x146078fe0_0, 0, 32;
+T_1.6 ;
+    %load/vec4 v0x146078fe0_0;
+    %cmpi/s 3, 0, 32;
+    %jmp/0xz T_1.7, 5;
+    %ix/getv/s 4, v0x1460791e0_0;
+    %load/vec4a v0x146078c30, 4;
+    %load/vec4 v0x146078fe0_0;
+    %part/s 1;
+    %load/vec4 v0x146078f00_0;
+    %load/vec4 v0x146078fe0_0;
+    %add;
+    %ix/vec4/s 4;
+    %store/vec4 v0x146078ce0_0, 4, 1;
+    %ix/getv/s 4, v0x1460791e0_0;
+    %load/vec4a v0x146078da0, 4;
+    %load/vec4 v0x146078fe0_0;
+    %part/s 1;
+    %load/vec4 v0x146078f00_0;
+    %load/vec4 v0x146078fe0_0;
+    %add;
+    %ix/vec4/s 4;
+    %store/vec4 v0x146078e50_0, 4, 1;
+    %load/vec4 v0x146078fe0_0;
+    %addi 1, 0, 32;
+    %store/vec4 v0x146078fe0_0, 0, 32;
+    %jmp T_1.6;
+T_1.7 ;
+    %load/vec4 v0x1460791e0_0;
+    %addi 1, 0, 32;
+    %store/vec4 v0x1460791e0_0, 0, 32;
+    %jmp T_1.4;
+T_1.5 ;
+    %delay 1000, 0;
+    %pushi/vec4 0, 0, 32;
+    %store/vec4 v0x1460791e0_0, 0, 32;
+T_1.8 ;
+    %load/vec4 v0x1460791e0_0;
+    %cmpi/s 16, 0, 32;
+    %jmp/0xz T_1.9, 5;
+    %load/vec4 v0x1460791e0_0;
+    %muli 3, 0, 32;
+    %store/vec4 v0x146078f00_0, 0, 32;
+    %pushi/vec4 0, 0, 32;
+    %store/vec4 v0x146078fe0_0, 0, 32;
+T_1.10 ;
+    %load/vec4 v0x146078fe0_0;
+    %cmpi/s 3, 0, 32;
+    %jmp/0xz T_1.11, 5;
+    %load/vec4 v0x1460793a0_0;
+    %load/vec4 v0x146078f00_0;
+    %load/vec4 v0x146078fe0_0;
+    %add;
+    %part/s 1;
+    %ix/getv/s 4, v0x146078fe0_0;
+    %store/vec4 v0x146079460_0, 4, 1;
+    %load/vec4 v0x146078fe0_0;
+    %addi 1, 0, 32;
+    %store/vec4 v0x146078fe0_0, 0, 32;
+    %jmp T_1.10;
+T_1.11 ;
+    %load/vec4 v0x146079460_0;
+    %ix/getv/s 4, v0x1460791e0_0;
+    %load/vec4a v0x146079140, 4;
+    %cmp/ne;
+    %jmp/0xz  T_1.12, 6;
+    %vpi_call/w 3 87 "$display", "MISMATCH: vec=%0d lane=%0d  a=%0d b=%0d got=%0d exp=%0d", v0x1460792f0_0, v0x1460791e0_0, &A<v0x146078c30, v0x1460791e0_0 >, &A<v0x146078da0, v0x1460791e0_0 >, v0x146079460_0, &A<v0x146079140, v0x1460791e0_0 > {0 0 0};
+    %load/vec4 v0x146079090_0;
+    %addi 1, 0, 32;
+    %store/vec4 v0x146079090_0, 0, 32;
+T_1.12 ;
+    %load/vec4 v0x1460791e0_0;
+    %addi 1, 0, 32;
+    %store/vec4 v0x1460791e0_0, 0, 32;
+    %jmp T_1.8;
+T_1.9 ;
+    %load/vec4 v0x1460792f0_0;
+    %addi 1, 0, 32;
+    %store/vec4 v0x1460792f0_0, 0, 32;
+    %jmp T_1.0;
+T_1.1 ;
+    %load/vec4 v0x146079090_0;
+    %cmpi/e 0, 0, 32;
+    %jmp/0xz  T_1.14, 4;
+    %vpi_call/w 3 95 "$display", "[PASS] op_error_3d_mul_tile = 0 (M=%0d, NLANES=%0d)", P_0x146057cb0, P_0x146057cf0 {0 0 0};
+    %jmp T_1.15;
+T_1.14 ;
+    %vpi_call/w 3 97 "$display", "[FAIL] op_error_3d_mul_tile = %0d", v0x146079090_0 {0 0 0};
+T_1.15 ;
+    %vpi_call/w 3 100 "$finish" {0 0 0};
+    %end;
+    .thread T_1;
+# The file index is used to find the file name in the following table.
+:file_names 6;
+    "N/A";
+    "<interactive>";
+    "-";
+    "tb/tb_copbit_ppu_3d_mul_tile.v";
+    "rtl/copbit_ppu_3d_mul_tile.v";
+    "rtl/copbit_ppu_3d_mul_core.v";

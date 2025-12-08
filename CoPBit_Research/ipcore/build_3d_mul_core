@@ -1,0 +1,137 @@
+#! /opt/homebrew/Cellar/icarus-verilog/12.0/bin/vvp
+:ivl_version "12.0 (stable)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 12;
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/system.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/vhdl_sys.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/vhdl_textio.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/v2005_math.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/va_math.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/v2009.vpi";
+S_0x12e705930 .scope package, "$unit" "$unit" 2 1;
+ .timescale 0 0;
+S_0x12e705aa0 .scope module, "tb_copbit_ppu_3d_mul_core" "tb_copbit_ppu_3d_mul_core" 3 7;
+ .timescale -9 -12;
+P_0x12e712dd0 .param/l "M" 1 3 9, +C4<00000000000000000000000000001000>;
+P_0x12e712e10 .param/l "WIDTH" 1 3 10, +C4<00000000000000000000000000000011>;
+v0x12e7255a0_0 .var "a_idx", 2 0;
+v0x12e725670_0 .var "b_idx", 2 0;
+v0x12e725720_0 .var/i "err_cnt", 31 0;
+v0x12e7257d0_0 .var/i "i", 31 0;
+v0x12e725880_0 .var/i "j", 31 0;
+v0x12e725970_0 .net "y_idx", 2 0, L_0x12e725a10;  1 drivers
+S_0x12e70b590 .scope module, "dut" "copbit_ppu_3d_mul_core" 3 23, 4 7 0, S_0x12e705aa0;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 3 "a_idx";
+    .port_info 1 /INPUT 3 "b_idx";
+    .port_info 2 /OUTPUT 3 "y_idx";
+P_0x12e70b700 .param/l "M" 0 4 8, +C4<00000000000000000000000000001000>;
+P_0x12e70b740 .param/l "POW2" 1 4 18, +C4<00000000000000000000000000001000>;
+P_0x12e70b780 .param/l "PW" 1 4 17, +C4<00000000000000000000000000000110>;
+P_0x12e70b7c0 .param/l "USE_POW2" 1 4 21, +C4<00000000000000000000000000000001>;
+P_0x12e70b800 .param/l "WIDTH" 0 4 9, +C4<00000000000000000000000000000011>;
+v0x12e715250_0 .net *"_ivl_1", 5 0, L_0x12e725af0;  1 drivers
+L_0x130078010 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x12e724c50_0 .net *"_ivl_4", 2 0, L_0x130078010;  1 drivers
+v0x12e724cf0_0 .net *"_ivl_5", 5 0, L_0x12e725c50;  1 drivers
+L_0x130078058 .functor BUFT 1, C4<000>, C4<0>, C4<0>, C4<0>;
+v0x12e724d80_0 .net *"_ivl_8", 2 0, L_0x130078058;  1 drivers
+v0x12e724e10_0 .net "a_idx", 2 0, v0x12e7255a0_0;  1 drivers
+v0x12e724ee0_0 .net "b_idx", 2 0, v0x12e725670_0;  1 drivers
+v0x12e724f90_0 .net "prod_full", 5 0, L_0x12e725db0;  1 drivers
+v0x12e725040_0 .net "y_idx", 2 0, L_0x12e725a10;  alias, 1 drivers
+L_0x12e725a10 .part L_0x12e725db0, 0, 3;
+L_0x12e725af0 .concat [ 3 3 0 0], v0x12e7255a0_0, L_0x130078010;
+L_0x12e725c50 .concat [ 3 3 0 0], v0x12e725670_0, L_0x130078058;
+L_0x12e725db0 .arith/mult 6, L_0x12e725af0, L_0x12e725c50;
+S_0x12e7150e0 .scope generate, "GEN_POW2_MOD" "GEN_POW2_MOD" 4 28, 4 28 0, S_0x12e70b590;
+ .timescale -9 -12;
+S_0x12e725120 .scope function.vec4.s3, "mul3d_truth" "mul3d_truth" 3 30, 3 30 0, S_0x12e705aa0;
+ .timescale -9 -12;
+v0x12e7252f0_0 .var "a", 2 0;
+v0x12e725380_0 .var "b", 2 0;
+; Variable mul3d_truth is vec4 return value of scope S_0x12e725120
+v0x12e7254f0_0 .var/i "prod", 31 0;
+TD_tb_copbit_ppu_3d_mul_core.mul3d_truth ;
+    %load/vec4 v0x12e7252f0_0;
+    %pad/u 32;
+    %load/vec4 v0x12e725380_0;
+    %pad/u 32;
+    %mul;
+    %store/vec4 v0x12e7254f0_0, 0, 32;
+    %load/vec4 v0x12e7254f0_0;
+    %pushi/vec4 8, 0, 32;
+    %mod/s;
+    %pad/s 3;
+    %ret/vec4 0, 0, 3;  Assign to mul3d_truth (store_vec4_to_lval)
+    %end;
+    .scope S_0x12e705aa0;
+T_1 ;
+    %vpi_call/w 3 41 "$display", "=== CoPBit PPU 3D-MUL truthcheck (M=%0d) ===", P_0x12e712dd0 {0 0 0};
+    %pushi/vec4 0, 0, 32;
+    %store/vec4 v0x12e725720_0, 0, 32;
+    %pushi/vec4 0, 0, 32;
+    %store/vec4 v0x12e7257d0_0, 0, 32;
+T_1.0 ;
+    %load/vec4 v0x12e7257d0_0;
+    %cmpi/s 8, 0, 32;
+    %jmp/0xz T_1.1, 5;
+    %pushi/vec4 0, 0, 32;
+    %store/vec4 v0x12e725880_0, 0, 32;
+T_1.2 ;
+    %load/vec4 v0x12e725880_0;
+    %cmpi/s 8, 0, 32;
+    %jmp/0xz T_1.3, 5;
+    %load/vec4 v0x12e7257d0_0;
+    %parti/s 3, 0, 2;
+    %store/vec4 v0x12e7255a0_0, 0, 3;
+    %load/vec4 v0x12e725880_0;
+    %parti/s 3, 0, 2;
+    %store/vec4 v0x12e725670_0, 0, 3;
+    %delay 1000, 0;
+    %load/vec4 v0x12e725970_0;
+    %load/vec4 v0x12e7255a0_0;
+    %load/vec4 v0x12e725670_0;
+    %store/vec4 v0x12e725380_0, 0, 3;
+    %store/vec4 v0x12e7252f0_0, 0, 3;
+    %callf/vec4 TD_tb_copbit_ppu_3d_mul_core.mul3d_truth, S_0x12e725120;
+    %cmp/ne;
+    %jmp/0xz  T_1.4, 6;
+    %load/vec4 v0x12e7255a0_0;
+    %load/vec4 v0x12e725670_0;
+    %store/vec4 v0x12e725380_0, 0, 3;
+    %store/vec4 v0x12e7252f0_0, 0, 3;
+    %callf/vec4 TD_tb_copbit_ppu_3d_mul_core.mul3d_truth, S_0x12e725120;
+    %vpi_call/w 3 54 "$display", "MISMATCH: a=%0d b=%0d  got=%0d exp=%0d", v0x12e7255a0_0, v0x12e725670_0, v0x12e725970_0, S<0,vec4,u3> {1 0 0};
+    %load/vec4 v0x12e725720_0;
+    %addi 1, 0, 32;
+    %store/vec4 v0x12e725720_0, 0, 32;
+T_1.4 ;
+    %load/vec4 v0x12e725880_0;
+    %addi 1, 0, 32;
+    %store/vec4 v0x12e725880_0, 0, 32;
+    %jmp T_1.2;
+T_1.3 ;
+    %load/vec4 v0x12e7257d0_0;
+    %addi 1, 0, 32;
+    %store/vec4 v0x12e7257d0_0, 0, 32;
+    %jmp T_1.0;
+T_1.1 ;
+    %load/vec4 v0x12e725720_0;
+    %cmpi/e 0, 0, 32;
+    %jmp/0xz  T_1.6, 4;
+    %vpi_call/w 3 62 "$display", "[PASS] op_error_3d_mul = 0 (all %0d combinations)", 32'sb00000000000000000000000001000000 {0 0 0};
+    %jmp T_1.7;
+T_1.6 ;
+    %vpi_call/w 3 64 "$display", "[FAIL] op_error_3d_mul = %0d (out of %0d combinations)", v0x12e725720_0, 32'sb00000000000000000000000001000000 {0 0 0};
+T_1.7 ;
+    %vpi_call/w 3 67 "$finish" {0 0 0};
+    %end;
+    .thread T_1;
+# The file index is used to find the file name in the following table.
+:file_names 5;
+    "N/A";
+    "<interactive>";
+    "-";
+    "tb/tb_copbit_ppu_3d_mul_core.v";
+    "rtl/copbit_ppu_3d_mul_core.v";
